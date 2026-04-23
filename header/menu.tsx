@@ -154,7 +154,8 @@ const Menu = () => {
     <nav className="flex items-center gap-1">
       {menuItems.map((item, index) => {
         const isActive =
-          pathname === item.href || pathname.startsWith(item.href + "/");
+          pathname === item.href ||
+          (pathname?.startsWith(item.href + "/") ?? false);
 
         if (item.hasDropdown) {
           return (
