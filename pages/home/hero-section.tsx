@@ -86,11 +86,11 @@ export default function HeroSection() {
 
   return (
     <section className="relative w-full h-screen min-h-screen overflow-hidden">
-      <div className="bg-[#1a1814] absolute inset-0 size-full" />
+      <div className="bg-black/40 z-10 absolute inset-0 size-full" />
 
       <img
         ref={imgRef}
-        src="https://images.unsplash.com/photo-1628706200306-5d026edc69ee?q=80&w=1228&auto=format&fit=crop&ixlib=rb-4.1.0"
+        src="/home/hero.jpg"
         alt="Luxury interior"
         className="absolute inset-0 w-full h-full object-cover"
         style={{ opacity: 0, transform: "scale(1.08)" }}
@@ -106,7 +106,7 @@ export default function HeroSection() {
         }}
       />
 
-      <div className="absolute inset-0 w-full flex flex-col justify-end">
+      <div className="absolute z-10 inset-0 w-full flex flex-col justify-end">
         <div className="max-w-[94%] mx-auto w-full pb-12">
           <p
             ref={eyebrowRef}
