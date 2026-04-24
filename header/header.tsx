@@ -72,7 +72,9 @@ const Header = () => {
       <div className="w-full max-w-[94%] mx-auto flex items-center justify-between">
         <Logo />
         <Menu />
-        <MobileMenu />
+        <div className="block lg:hidden">
+          <MobileMenu />
+        </div>
         <button className="hidden lg:block text-[11.5px] font-medium tracking-[0.1em] uppercase text-[#1a1814] bg-white/93 hover:bg-white px-5 py-[9px] rounded-[2px] transition-all duration-200 hover:-translate-y-px cursor-pointer">
           Contact Us
         </button>
