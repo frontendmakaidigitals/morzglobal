@@ -117,7 +117,7 @@ export default function HeroSection() {
           </p>
 
           <h1
-            className="lg:text-7xl font-light leading-[1.04] text-white tracking-[-0.01em] mb-4"
+            className="text-5xl lg:text-7xl font-light leading-[1.04] text-white tracking-tighter mb-4"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
             <span className="block overflow-hidden">

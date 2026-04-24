@@ -145,7 +145,7 @@ export default function Footer() {
       <div className="flex-1" />
 
       {/* Footer */}
-      <footer className="anim-footer-body px-10 pb-10 pt-52 grid grid-cols-[auto_auto] container">
+      <footer className="anim-footer-body px-10 pb-10 pt-52 grid grid-cols-1 lg:grid-cols-[auto_auto] container">
         <div className="anim-logo opacity-0 flex flex-col gap-3">
           <h4 className="text-4xl text-primary">Logo</h4>
           <p className="text-xs text-gray-900/70 max-w-xs leading-relaxed font-light">
@@ -155,7 +155,7 @@ export default function Footer() {
         </div>
 
         {/* Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16 max-w-5xl">
+        <div className="mt-10 lg:mt-0 grid grid-cols-2 md:grid-cols-5 gap-10 mb-16 max-w-5xl">
           {footerColumns.map((col) => (
             <div key={col.title} className="anim-col opacity-0">
               <p className="text-xs font-semibold text-gray-900 mb-4 tracking-wide uppercase">
@@ -208,10 +208,10 @@ export default function Footer() {
 
 function CTACard() {
   return (
-    <div className="anim-cta opacity-0 bg-black -translate-y-1/2 absolute left-1/2 -translate-x-1/2 max-w-5xl w-full rounded-2xl overflow-hidden flex items-stretch">
+    <div className="anim-cta opacity-0 bg-black -translate-y-1/2 absolute left-1/2 -translate-x-1/2 max-w-[94%] lg:max-w-5xl w-full rounded-2xl overflow-hidden flex items-stretch">
       <div className="flex-1 p-12 flex flex-col justify-between z-10 relative">
         <div>
-          <h2 className="text-4xl font-bold text-white leading-tight tracking-tight mb-2.5">
+          <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight tracking-tight mb-2.5">
             Powering industrial performance
             <br />
             with precision engineering
@@ -227,7 +227,7 @@ function CTACard() {
           </button>
         </div>
       </div>
-      <div className="w-md scale-[1.4] absolute translate-y-1/4 right-0 translate-x-1/2 p-3 flex-shrink-0 overflow-hidden">
+      <div className="w-xs lg:w-md scale-[1.2] lg:scale-[1.4] absolute translate-y-1/4 right-0 translate-x-1/2 p-3 flex-shrink-0 overflow-hidden">
         <img
           src="/globe.png"
           className="w-full h-full object-cover"

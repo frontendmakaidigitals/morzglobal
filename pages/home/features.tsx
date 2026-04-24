@@ -93,7 +93,7 @@ export default function FeaturesSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#f6f4f1] py-20 px-6 md:px-12">
+    <section ref={sectionRef} className="bg-[#f6f4f1] py-20 ">
       <div className="container">
         {/* TOP CONTENT */}
         <div className="grid md:grid-cols-[.9fr_1.1fr] gap-10 items-center mb-12">

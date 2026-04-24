@@ -97,7 +97,7 @@ export default function Specialties() {
   }, []);
 
   return (
-    <section className="bg-black text-white py-24 px-6 md:px-12">
+    <section className="bg-black text-white py-24 ">
       <div className="container">
         {/* Heading */}
         <div className="text-center mb-16">

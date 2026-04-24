@@ -57,7 +57,7 @@ export default function ContactForm() {
     <div ref={sectionRef} className="w-full mt-18">
       <div className="container grid grid-cols-1 lg:grid-cols-2 min-h-[520px]">
         {/* LEFT — info panel */}
-        <div className="px-[52px] flex flex-col justify-between">
+        <div className="lg:px-[52px] flex flex-col justify-between">
           <div>
             <p className="cf-eyebrow opacity-0 text-[11px] tracking-[0.16em] text-[#999] italic mb-5">
               / get in touch /
@@ -149,7 +149,7 @@ export default function ContactForm() {
         </div>
 
         {/* RIGHT — form panel */}
-        <div className="cf-form-panel opacity-0 bg-[#f7f5f2] px-12 py-14 rounded-2xl flex flex-col justify-center">
+        <div className="cf-form-panel opacity-0 bg-[#f7f5f2] px-5 mt-10 lg:mt-0 lg:px-12 py-14 rounded-2xl flex flex-col justify-center">
           <h2
             className="text-2xl font-normal text-[#111] mb-1.5"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Logo from "@/pages/components/Logo";
 import Menu from "./menu";
+import MobileMenu from "./mobile-menu";
 
 export const menuItems = [
   { label: "Home", href: "/" },
@@ -71,7 +72,8 @@ const Header = () => {
       <div className="w-full max-w-[94%] mx-auto flex items-center justify-between">
         <Logo />
         <Menu />
-        <button className="text-[11.5px] font-medium tracking-[0.1em] uppercase text-[#1a1814] bg-white/93 hover:bg-white px-5 py-[9px] rounded-[2px] transition-all duration-200 hover:-translate-y-px cursor-pointer">
+        <MobileMenu />
+        <button className="hidden lg:block text-[11.5px] font-medium tracking-[0.1em] uppercase text-[#1a1814] bg-white/93 hover:bg-white px-5 py-[9px] rounded-[2px] transition-all duration-200 hover:-translate-y-px cursor-pointer">
           Contact Us
         </button>
       </div>

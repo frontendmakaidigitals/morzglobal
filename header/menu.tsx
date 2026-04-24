@@ -151,7 +151,7 @@ const Menu = () => {
   }, []);
 
   return (
-    <nav className="flex items-center gap-1">
+    <nav className="hidden lg:flex items-center gap-1">
       {menuItems.map((item, index) => {
         const isActive =
           pathname === item.href ||
