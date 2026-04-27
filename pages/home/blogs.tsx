@@ -65,7 +65,7 @@ export default function BlogSection() {
             {blogs.map((blog, i) => (
               <CarouselItem
                 key={i}
-                className="pl-6 basis-full md:basis-1/2 lg:basis-1/4"
+                className="pl-6 basis-full basis-2/3 md:basis-1/2 lg:basis-1/4"
               >
                 <BlogCard {...blog} />
               </CarouselItem>
