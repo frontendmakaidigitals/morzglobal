@@ -8,7 +8,7 @@ import HeroSection from "@/pages/home/hero-section";
 import TextMarquee from "@/pages/home/text-marquee";
 import ServicesOverview from "@/pages/home/service-overview";
 import ServicesGrid from "@/pages/home/serviice";
-import { LogoMarquee } from "@/pages/home/logo-marquee";
+import LogoMarquee from "@/pages/home/logo-marquee";
 const Page = () => {
   return (
     <>

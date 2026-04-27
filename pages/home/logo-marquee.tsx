@@ -41,7 +41,7 @@ const LogoItem = ({ src, name }: { src: string; name: string }) => {
   );
 };
 
-export function LogoMarquee() {
+export default function LogoMarquee() {
   return (
     <div className="relative w-full overflow-hidden py-20">
       <Marquee className="[--duration:25s]">
