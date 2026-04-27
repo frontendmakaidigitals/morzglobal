@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSmootherReady } from "@/app/smoother-context";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,12 +23,16 @@ const services = [
 ];
 
 export default function Specialties() {
+  const smootherReady = useSmootherReady();
+
   const labelRef = useRef<HTMLParagraphElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const cardRefs = useRef<HTMLDivElement[]>([]);
   const imgRefs = useRef<HTMLImageElement[]>([]);
 
   useEffect(() => {
+    if (!smootherReady) return;
+
     const label = labelRef.current;
     const heading = headingRef.current;
     const cards = cardRefs.current;
@@ -34,54 +40,35 @@ export default function Specialties() {
 
     if (!label || !heading || !cards.length) return;
 
-    // ── HEADER ──────────────────────────────────────────────────
-    gsap.fromTo(
-      [label, heading],
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out",
-        stagger: 0.15,
-        scrollTrigger: {
-          trigger: label,
-          start: "top 88%",
-          toggleActions: "play none none none",
-        },
-      },
-    );
-
-    // ── CARDS — reveal wipe + image zoom ───────────────────────
-    cards.forEach((card, i) => {
-      const img = imgs[i];
-      const direction = i % 2 === 0 ? -60 : 60; // left card from left, right from right
-
-      // card slides in from side + fades
+    const ctx = gsap.context(() => {
       gsap.fromTo(
-        card,
-        { opacity: 0, x: direction },
+        [label, heading],
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
-          x: 0,
-          duration: 0.9,
-          ease: "power3.out",
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          stagger: 0.15,
           scrollTrigger: {
-            trigger: card,
+            trigger: label,
             start: "top 88%",
             toggleActions: "play none none none",
           },
         },
       );
 
-      // image starts zoomed in, settles to normal
-      if (img) {
+      cards.forEach((card, i) => {
+        const img = imgs[i];
+        const direction = i % 2 === 0 ? -60 : 60;
+
         gsap.fromTo(
-          img,
-          { scale: 1.15 },
+          card,
+          { opacity: 0, x: direction },
           {
-            scale: 1,
-            duration: 1.1,
+            opacity: 1,
+            x: 0,
+            duration: 0.9,
             ease: "power3.out",
             scrollTrigger: {
               trigger: card,
@@ -90,16 +77,34 @@ export default function Specialties() {
             },
           },
         );
-      }
+
+        if (img) {
+          gsap.fromTo(
+            img,
+            { scale: 1.15 },
+            {
+              scale: 1,
+              duration: 1.1,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 88%",
+                toggleActions: "play none none none",
+              },
+            },
+          );
+        }
+      });
+
+      ScrollTrigger.refresh();
     });
 
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
-  }, []);
+    return () => ctx.revert();
+  }, [smootherReady]);
 
   return (
-    <section className="bg-black text-white py-24 ">
+    <section className="bg-black text-white py-24">
       <div className="container">
-        {/* Heading */}
         <div className="text-center mb-16">
           <p
             ref={labelRef}
@@ -112,7 +117,6 @@ export default function Specialties() {
           </h2>
         </div>
 
-        {/* Cards */}
         <div className="grid md:grid-cols-2 gap-10">
           {services.map((item, i) => (
             <div
@@ -122,20 +126,16 @@ export default function Specialties() {
               }}
               className="group relative overflow-hidden rounded-xl h-[420px]"
             >
-              {/* Image */}
-              <img
+              <Image
+                fill
                 ref={(el) => {
                   if (el) imgRefs.current[i] = el;
                 }}
                 src={item.image}
                 alt={item.title}
-                className="absolute size-full object-cover group-hover:scale-110 transition duration-700"
+                className=" size-full object-cover group-hover:scale-110 transition duration-700"
               />
-
-              {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-              {/* Content */}
               <div className="absolute bottom-0 p-6 md:p-8">
                 <p className="text-sm text-gray-300 mb-1">{item.subtitle}</p>
                 <h3 className="text-xl md:text-2xl font-semibold mb-4 max-w-md">

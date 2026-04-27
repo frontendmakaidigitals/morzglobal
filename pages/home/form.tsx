@@ -3,13 +3,17 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSmootherReady } from "@/app/smoother-context";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ContactForm() {
+  const smootherReady = useSmootherReady();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!smootherReady) return;
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -46,12 +50,14 @@ export default function ContactForm() {
           ".cf-form-panel",
           { opacity: 0, x: 40, scale: 0.98 },
           { opacity: 1, x: 0, scale: 1, duration: 0.85, ease: "power3.out" },
-          "-=0.9", // overlaps with left-side animations for a parallel feel
+          "-=0.9",
         );
+
+      ScrollTrigger.refresh();
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [smootherReady]);
 
   return (
     <div ref={sectionRef} className="w-full mt-18">
@@ -66,7 +72,8 @@ export default function ContactForm() {
               className="cf-heading opacity-0 text-5xl font-normal leading-[1.1] text-[#111] tracking-[-0.01em] mb-5"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
-              We are always ready to help you and answer your questions
+              We are always ready to help you and{" "}
+              <span className="text-primary">answer your questions</span>
             </h1>
             <p className="cf-subtext opacity-0 text-[13.5px] leading-[1.8] text-[#888] font-light mb-10">
               Have questions or need a customized machinery solution? Our team
@@ -149,7 +156,7 @@ export default function ContactForm() {
         </div>
 
         {/* RIGHT — form panel */}
-        <div className="cf-form-panel opacity-0 bg-[#f7f5f2] px-5 mt-10 lg:mt-0 lg:px-12 py-14 rounded-2xl flex flex-col justify-center">
+        <div className="cf-form-panel opacity-0 bg-white shadow border border-gray-400/20 px-5 mt-10 lg:mt-0 lg:px-12 py-14 rounded-2xl flex flex-col justify-center">
           <h2
             className="text-2xl font-normal text-[#111] mb-1.5"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
@@ -174,7 +181,7 @@ export default function ContactForm() {
                 key={label}
                 className="group relative border-b border-[#e0dbd4] pt-3.5 pb-2.5 focus-within:[&_.underline-bar]:scale-x-100"
               >
-                <label className="block text-sm font-[400] tracking-[0.1em] text-primary/60 mb-1.5">
+                <label className="block text-sm font-[400] tracking-[0.1em] text-gray-900/60 mb-1.5">
                   {label}
                 </label>
                 <input
@@ -187,7 +194,7 @@ export default function ContactForm() {
             ))}
 
             <div className="group relative border-b border-[#e0dbd4] pt-3.5 pb-2.5 focus-within:[&_.underline-bar]:scale-x-100">
-              <label className="block text-sm font-[400] tracking-[0.1em] text-primary/60 mb-1.5">
+              <label className="block text-sm font-[400] tracking-[0.1em] text-gray-900/60 mb-1.5">
                 Message
               </label>
               <textarea
@@ -200,7 +207,7 @@ export default function ContactForm() {
           </div>
 
           <div className="flex items-center justify-between mt-7">
-            <button className="inline-flex items-center gap-2.5 bg-[#1a1814] hover:bg-[#333] text-white px-6 py-3 rounded-[2px] text-xs font-medium tracking-[0.08em] uppercase transition-all duration-200 hover:-translate-y-px group">
+            <button className="inline-flex items-center gap-2.5 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-sm text-xs font-medium uppercase transition-all duration-200 hover:scale-[1.03] group">
               Send a message
               <svg
                 width="14"
@@ -218,7 +225,7 @@ export default function ContactForm() {
                 />
               </svg>
             </button>
-            <span className="text-[11px] text-[#ccc] font-light tracking-[0.04em]">
+            <span className="text-[11px] text-gray-500 font-light tracking-[0.04em]">
               We reply within 24h
             </span>
           </div>

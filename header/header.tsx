@@ -6,46 +6,46 @@ import MobileMenu from "./mobile-menu";
 
 export const menuItems = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "About", href: "/" },
   { label: "Products", href: "/products", hasDropdown: true },
-  { label: "Blogs", href: "/blogs" },
+  { label: "Blogs", href: "/" },
 ];
 
 export const productItems = [
   {
     label: "Residential",
     desc: "Luxury apartments and villas curated for modern living",
-    href: "/products/residential",
+    href: "/",
     icon: "grid",
   },
   {
     label: "Commercial",
     desc: "Premium office and retail spaces for businesses",
-    href: "/products/commercial",
+    href: "/",
     icon: "building",
   },
   {
     label: "Off-plan",
     desc: "Invest early in upcoming landmark developments",
-    href: "/products/off-plan",
+    href: "/-plan",
     icon: "clock",
   },
   {
     label: "Holiday Homes",
     desc: "Seasonal rentals in the world's finest destinations",
-    href: "/products/holiday",
+    href: "/",
     icon: "home",
   },
   {
     label: "New Launches",
     desc: "Be the first to access our latest exclusive listings",
-    href: "/products/new",
+    href: "/",
     icon: "plus",
   },
   {
     label: "Investment",
     desc: "High-yield portfolios for serious real estate investors",
-    href: "/products/investment",
+    href: "/",
     icon: "chart",
   },
 ];
@@ -62,7 +62,7 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 py-5 flex items-center transition-all duration-400 ease-in-out
+      className={`fixed top-0 inset-x-0 z-50 py-4 flex items-center transition-all duration-400 ease-in-out
         ${
           scrolled
             ? "bg-black/55 backdrop-blur-xl border-b border-white/10"
@@ -70,12 +70,12 @@ const Header = () => {
         }`}
     >
       <div className="w-full max-w-[94%] mx-auto flex items-center justify-between">
-        <Logo />
+        <Logo light={true} />
         <Menu />
         <div className="block lg:hidden">
           <MobileMenu />
         </div>
-        <button className="hidden lg:block text-[11.5px] font-medium tracking-[0.1em] uppercase text-[#1a1814] bg-white/93 hover:bg-white px-5 py-[9px] rounded-[2px] transition-all duration-200 hover:-translate-y-px cursor-pointer">
+        <button className="hidden lg:block text-sm font-medium uppercase   bg-primary text-white hover:bg-primary/80 px-5 py-3 rounded-[2px] transition-all duration-200 hover:scale-[1.03] cursor-pointer">
           Contact Us
         </button>
       </div>

@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Footer from "@/footer/footer";
 import Header from "@/header/header";
+import SmoothScrollProvider from "./smooth-scrollprovder";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
@@ -39,9 +40,12 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
-        <Header />
-        {children}
-        <Footer />
+        <SmoothScrollProvider>
+          <Header />
+          {children}
+
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   );

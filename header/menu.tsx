@@ -38,9 +38,9 @@ const ProductsDropdown = ({ open }: { open: boolean }) => (
 
     {/* Grid */}
     <div className="grid grid-cols-3 gap-[2px]">
-      {productItems.map((item) => (
+      {productItems.map((item, i) => (
         <Link
-          key={item.href}
+          key={i}
           href={item.href}
           className="group flex flex-col gap-1.5 p-3.5 rounded-[3px] bg-white/[0.03] hover:bg-white/[0.08] transition-colors duration-150"
         >
@@ -191,7 +191,7 @@ const Menu = () => {
 
         return (
           <Link
-            key={item.href}
+            key={index}
             href={item.href}
             style={{ animationDelay: `${0.1 + index * 0.05}s` }}
             className={`relative tracking-[0.08em] px-3.5 py-1.5 transition-colors duration-200 animate-slideDown

@@ -5,7 +5,8 @@
 @custom-variant dark (&:is(.light *));
 
 :root {
-  --primary: oklch(0.205 0 0);
+  --primary: #1b93d0;
+  --primary-dark: #1663b0;
   --text: #333333;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -14,7 +15,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: #63b13a;
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -42,6 +43,7 @@
 
 @theme inline {
   --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
@@ -83,6 +85,24 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
 }
 
 @layer base {
@@ -95,6 +115,10 @@
   html {
     @apply font-sans;
   }
+}
+
+body {
+  background-color: #fcfeff;
 }
 
 @utility container {

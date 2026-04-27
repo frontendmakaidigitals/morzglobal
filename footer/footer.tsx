@@ -3,8 +3,9 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSmootherReady } from "@/app/smoother-context";
 import Logo from "@/pages/components/Logo";
-
+import Image from "next/image";
 gsap.registerPlugin(ScrollTrigger);
 
 const footerColumns = [
@@ -49,18 +50,21 @@ const footerColumns = [
   },
 ];
 
-const SocialIcon = ({ children }: { children: React.ReactNode }) => (
-  <span className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-900 cursor-pointer transition">
-    {children}
-  </span>
-);
+const socialIcons = [
+  { name: "Twitter", icon: "twitter.png" },
+  { name: "LinkedIn", icon: "linkedin.png" },
+  { name: "Facebook", icon: "facebook.png" },
+  { name: "Instagram", icon: "instagram.png" },
+];
 
 export default function Footer() {
+  const smootherReady = useSmootherReady();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!smootherReady) return;
+
     const ctx = gsap.context(() => {
-      // CTA card — slides up from below
       gsap.fromTo(
         ".anim-cta",
         { opacity: 0, y: 60, scale: 0.97 },
@@ -78,7 +82,6 @@ export default function Footer() {
         },
       );
 
-      // Logo + tagline
       gsap.fromTo(
         ".anim-logo",
         { opacity: 0, y: 24 },
@@ -95,7 +98,6 @@ export default function Footer() {
         },
       );
 
-      // Footer columns — staggered
       gsap.fromTo(
         ".anim-col",
         { opacity: 0, y: 28 },
@@ -105,41 +107,23 @@ export default function Footer() {
           duration: 0.6,
           ease: "power2.out",
           stagger: 0.08,
+          delay: 0.15,
           scrollTrigger: {
             trigger: ".anim-footer-body",
             start: "top 88%",
             toggleActions: "play none none none",
           },
-          delay: 0.15,
         },
       );
 
-      // Bottom bar
-      gsap.fromTo(
-        ".anim-bottom",
-        { opacity: 0, y: 16 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".anim-bottom",
-            start: "top 95%",
-            toggleActions: "play none none none",
-          },
-        },
-      );
+      ScrollTrigger.refresh();
     }, wrapperRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [smootherReady]);
 
   return (
-    <div
-      ref={wrapperRef}
-      className="flex flex-col bg-[#f0f0ed] mt-60 font-sans"
-    >
+    <div ref={wrapperRef} className="flex flex-col bg-[#333] mt-60 font-sans">
       {/* CTA */}
       <CTACard />
       <div className="flex-1" />
@@ -147,8 +131,8 @@ export default function Footer() {
       {/* Footer */}
       <footer className="anim-footer-body px-10 pb-10 pt-52 grid grid-cols-1 lg:grid-cols-[auto_auto] container">
         <div className="anim-logo opacity-0 flex flex-col gap-3">
-          <h4 className="text-4xl text-primary">Logo</h4>
-          <p className="text-xs text-gray-900/70 max-w-xs leading-relaxed font-light">
+          <Logo light />
+          <p className="text-xs text-gray-50/70 max-w-xs leading-relaxed font-light">
             Delivering advanced industrial machinery solutions with a focus on
             performance, safety, and reliability.
           </p>
@@ -158,7 +142,7 @@ export default function Footer() {
         <div className="mt-10 lg:mt-0 grid grid-cols-2 md:grid-cols-5 gap-10 mb-16 max-w-5xl">
           {footerColumns.map((col) => (
             <div key={col.title} className="anim-col opacity-0">
-              <p className="text-xs font-semibold text-gray-900 mb-4 tracking-wide uppercase">
+              <p className="text-xs font-semibold text-gray-100 mb-4 tracking-wide uppercase">
                 {col.title}
               </p>
               <ul className="space-y-2.5">
@@ -167,7 +151,7 @@ export default function Footer() {
                   const arrow = typeof link === "object" && link.arrow;
                   return (
                     <li key={label}>
-                      <a className="text-sm text-gray-500 hover:text-gray-900 transition flex items-center gap-1 cursor-pointer">
+                      <a className="text-sm text-gray-200 hover:text-gray-300 transition flex items-center gap-1 cursor-pointer">
                         {label}
                         {arrow && <span className="text-xs opacity-70">↗</span>}
                       </a>
@@ -181,23 +165,21 @@ export default function Footer() {
       </footer>
 
       {/* Bottom */}
-      <div className="anim-bottom opacity-0 container">
-        <div className="border-t border-gray-200 pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <span className="text-xs text-gray-400">
-            © dsddd 2025. All rights reserved
+      <div className="anim-bottom  bg-primary">
+        <div className="container border-gray-50 py-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <span className="text-xs text-gray-50">
+            © MORZ Global 2026. All rights reserved
           </span>
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <SocialIcon key={i}>
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-8.073-.779-.565-1.202-.394-1.202.414 0 .394.047 3.44.047 5.508 0 .394-.246.739-.492.852-2.466 1.166-3.02 3.617-.738 5.068 1.5.905 3.574.738 4.923-.738.197-.21.492-.394.738-.394.246 0 .541.184.738.394 1.349 1.476 3.423 1.643 4.923.738 2.282-1.451 1.728-3.902-.738-5.068-.246-.113-.492-.458-.492-.852 0-2.068.047-5.114.047-5.508 0-.808-.423-.979-1.202-.414C16.046 4.747 13.087 8.686 12 10.8z" />
-                </svg>
-              </SocialIcon>
+          <div className="flex items-center gap-3">
+            {socialIcons.map((icon, i) => (
+              <Image
+                key={i}
+                src={`/social-icon/${icon.icon}`}
+                alt={icon.name}
+                width={24}
+                className="invert brightness-0"
+                height={24}
+              />
             ))}
           </div>
         </div>
