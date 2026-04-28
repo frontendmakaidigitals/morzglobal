@@ -41,7 +41,7 @@ const TextMarquee = () => {
 
   return (
     <section className="">
-      <ScrollVelocityContainer className="text-3xl text-gray-50 bg-secondary leading-[7rem] font-bold md:text-4xl overflow-hidden">
+      <ScrollVelocityContainer className="text-3xl font-poppins text-gray-50 bg-secondary leading-[7rem] font-bold md:text-4xl overflow-hidden">
         <ScrollVelocityRow baseVelocity={0.7} direction={1}>
           {onshoreText}
         </ScrollVelocityRow>
