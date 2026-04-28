@@ -85,16 +85,16 @@ export default function ContactForm() {
           <div className="cf-info opacity-0 grid grid-cols-2 gap-y-7 gap-x-5">
             {[
               {
-                label: "Call Center",
-                lines: ["800 100 975 20 34", "+1 (123) 1800-234-5678"],
+                label: "Call Us",
+                lines: ["+971 50 739 0680"],
               },
               {
                 label: "Our Location",
-                lines: ["USA, New York – 1060", "Str. First Avenue 1"],
+                lines: ["Churchill Tower Business Bay, Dubai- UAE"],
               },
               {
                 label: "Email",
-                lines: ["hello@elienis.co", "support@elienis.co"],
+                lines: ["info@morzglobal.com"],
               },
             ].map(({ label, lines }) => (
               <div key={label}>

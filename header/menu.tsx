@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState, useEffect } from "react";
 import { menuItems, productItems } from "./header";
+import { ChevronDown } from "lucide-react";
 
 const ProductsDropdown = ({ open }: { open: boolean }) => (
   <div
@@ -161,28 +162,13 @@ const Menu = () => {
           return (
             <div key={item.href} ref={dropRef} className="relative">
               <button
-                onClick={() => setDropOpen((p) => !p)}
-                className={`relative flex items-center gap-1.5 tracking-[0.08em] px-3.5 py-1.5 transition-colors duration-200
+                className={`relative flex items-center gap-1 tracking-[0.08em] px-3.5 py-1.5 transition-colors duration-200
                   after:absolute after:left-3.5 after:right-3.5 after:bottom-0.5 after:h-px after:bg-white/80
                   after:origin-left after:transition-transform after:duration-300
                   ${isActive || dropOpen ? "text-white after:scale-x-100" : "text-white/70 hover:text-white after:scale-x-0 hover:after:scale-x-100"}`}
               >
                 {item.label}
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  className={`transition-transform duration-250 ${dropOpen ? "rotate-180" : ""}`}
-                >
-                  <path
-                    d="M4 6l4 4 4-4"
-                    stroke="rgba(255,255,255,0.7)"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <ChevronDown className="size-5" />
               </button>
               <ProductsDropdown open={dropOpen} />
             </div>

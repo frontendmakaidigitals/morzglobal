@@ -6,9 +6,9 @@ import MobileMenu from "./mobile-menu";
 
 export const menuItems = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/" },
+  { label: "About", href: "/#" },
   { label: "Products", href: "/products", hasDropdown: true },
-  { label: "Blogs", href: "/" },
+  { label: "Blogs", href: "/#" },
 ];
 
 export const productItems = [
