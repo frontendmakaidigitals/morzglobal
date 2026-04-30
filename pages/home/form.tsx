@@ -76,7 +76,7 @@ export default function ContactForm() {
               <span className="text-primary">answer your questions</span>
             </h1>
             <p className="cf-subtext opacity-0 text-[13.5px] leading-[1.8] text-[#888] font-light mb-10">
-              Have questions or need a customized machinery solution? Our team
+              Have questions or need a customized engineering solution? Our team
               is ready to assist you with expert guidance and tailored
               recommendations.
             </p>
@@ -85,7 +85,7 @@ export default function ContactForm() {
           <div className="cf-info opacity-0 grid grid-cols-2 gap-y-7 gap-x-5">
             {[
               {
-                label: "Call Us",
+                label: "Call/ Whatsapp US ",
                 lines: ["+971 50 739 0680"],
               },
               {

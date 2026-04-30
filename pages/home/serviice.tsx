@@ -85,9 +85,6 @@ export default function ServicesGrid() {
       <div className="container">
         {/* Header */}
         <div className="text-center mb-12">
-          <p className="text-xs tracking-[0.2em] uppercase text-gray-500 mb-3">
-            What we serve
-          </p>
           <h2
             className="text-4xl md:text-6xl font-[500] text-gray-100"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}

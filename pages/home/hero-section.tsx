@@ -91,14 +91,6 @@ export default function HeroSection() {
       {/* ── Content ────────────────────────────────────────────── */}
       <div className="absolute z-10 inset-0 flex flex-col justify-center items-center text-center">
         <div className="max-w-[94%] mx-auto w-full flex flex-col items-center">
-          <p
-            ref={eyebrowRef}
-            className="text-xs font-normal px-4 bg-primary/40 rounded-sm text-sky-100 py-1.5 uppercase mb-3.5"
-            style={{ opacity: 0, transform: "translateY(12px)" }}
-          >
-            Premium Industrial Solutions
-          </p>
-
           <h1
             className="text-5xl lg:text-8xl font-light leading-[1.04] text-white tracking-tighter mb-4"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
@@ -109,7 +101,7 @@ export default function HeroSection() {
                 className="block text-secondary"
                 style={{ opacity: 0, transform: "translateY(100%)" }}
               >
-                Precision Machinery
+                Global Engineering 
               </span>
             </span>
             <span className="block overflow-hidden">
@@ -119,7 +111,7 @@ export default function HeroSection() {
                 style={{ opacity: 0, transform: "translateY(100%)" }}
               >
                 <em className="italic font-light text-white/75">
-                  for Industrial Performance
+                  Services Provider
                 </em>
               </span>
             </span>

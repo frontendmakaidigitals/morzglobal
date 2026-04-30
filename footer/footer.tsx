@@ -133,7 +133,7 @@ export default function Footer() {
         <div className="anim-logo opacity-0 flex flex-col gap-3">
           <Logo light />
           <p className="text-xs text-gray-50/70 max-w-xs leading-relaxed font-light">
-            Delivering advanced industrial machinery solutions with a focus on
+            Delivering advanced industrial engineering solutions with a focus on
             performance, safety, and reliability.
           </p>
         </div>

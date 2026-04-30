@@ -5,34 +5,47 @@ import { ArrowRight, LayoutGrid, Circle } from "lucide-react";
 const services = [
   {
     key: "onshore",
-    label: "Oil & Gas Onshore",
+    label: "Onshore",
     tag: "SECTOR A · EPC · BROWNFIELD",
     image: "/home/service-overview/onshore.jpg",
     points: [
-      "Detail Engineering (EPC)",
-      "Process & Safety",
-      "Mechanical (Static/Rotary)",
-      "Piping & Pipeline",
+      "Detail Engineering (EPC Stage)",
+      "Brownfield Modifications",
+      "Process & Safety Engineering",
+      "Mechanical (Static & Rotary) Engineering",
+      "Piping and Pipeline Engineering",
       "Electrical Engineering",
-      "Instrumentation",
-      "Civil/Structural",
-      "Cost Estimation",
+      "Instrumentation Engineering",
+      "Civil/Structural Engineering",
+      "Substation Design",
+      "Project Management & Project Planning",
+      "Cost Estimation & Budgeting",
+      "3D Modelling",
+      "As-built Drawings",
     ],
   },
   {
-    key: "offshore",
+    key: "Offshore",
     label: "Offshore Complex",
     tag: "SECTOR B · TOPSIDE · SUBSEA",
     image: "/home/service-overview/offshore.jpg",
     points: [
-      "Detail Engineering (EPC)",
+      "Detail Engineering (EPC Stage)",
+      "Brownfield Modifications",
       "Structural Studies",
       "Topside & Jacket Design",
-      "Lifting & Load Out",
-      "Sea Fastening",
-      "Process & Safety",
-      "Mechanical Engineering",
-      "Civil/Structural",
+      "Lifting & Load Out Plan",
+      "Sea Fastening Designs",
+      "Process & Process Safety Engineering",
+      "Mechanical (Static & Rotary) Engineering",
+      "Piping Engineering",
+      "Electrical Engineering",
+      "Instrumentation Engineering",
+      "Civil/Structural Engineering",
+      "Project Management & Project Planning",
+      "Cost Estimation & Budgeting",
+      "3D Modelling",
+      "As-built Drawings",
     ],
   },
 ];
@@ -69,11 +82,22 @@ export default function ServicesOverview() {
             </h2>
           </div>
 
-          <p className="max-w-sm text-sm text-neutral-600 leading-relaxed md:mt-4">
-            Delivering comprehensive EPC solutions with rigorous attention to
-            safety, efficiency, and structural integrity across challenging
-            environments.
-          </p>
+          <div className="md:mt-4 max-w-xl space-y-4 text-sm text-neutral-700">
+            <p className="  leading-relaxed ">
+              We deliver reliable engineering solutions for modern industries
+              MORZ Global is a multidisciplinary engineering consultancy
+              specializing in technically complex projects across the energy and
+              infrastructure sectors.
+            </p>
+            <p className="text-neutral-600">
+              Our team of qualified engineers and project specialists deliver
+              focused, reliable solutions across onshore and offshore oil & gas,
+              power generation, solar energy, and civil works — supported by
+              advanced capabilities in 3D modelling, drafting, and technical
+              documentation. We are committed to bringing accuracy, efficiency,
+              and long-term value to every project we undertake.
+            </p>
+          </div>
         </div>
 
         {/* Grid Layout */}

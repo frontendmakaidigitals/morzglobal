@@ -131,7 +131,7 @@ export default function AboutSection() {
           >
             We deliver{" "}
             <em className="italic font-light text-primary">
-              reliable machinery{" "}
+              reliable engineering{" "}
             </em>
             solutions for modern industries
           </h2>

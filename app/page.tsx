@@ -14,7 +14,6 @@ const Page = () => {
     <>
       <HeroSection />
       <AboutSection />
-      <LogoMarquee />
       <ServicesOverview />
       <TextMarquee />
       <ServicesGrid />
