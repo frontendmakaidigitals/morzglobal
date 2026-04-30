@@ -85,8 +85,8 @@ export default function ContactForm() {
           <div className="cf-info opacity-0 grid grid-cols-2 gap-y-7 gap-x-5">
             {[
               {
-                label: "Call/ Whatsapp US ",
-                lines: ["+971 50 739 0680"],
+                label: "Call / Whatsapp US ",
+                lines: ["+971 55 974 3425"],
               },
               {
                 label: "Our Location",

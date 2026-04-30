@@ -5,7 +5,7 @@ import { ArrowRight, LayoutGrid, Circle } from "lucide-react";
 const services = [
   {
     key: "onshore",
-    label: "Onshore",
+    label: "Onshore Projects",
     tag: "SECTOR A · EPC · BROWNFIELD",
     image: "/home/service-overview/onshore.jpg",
     points: [
@@ -26,7 +26,7 @@ const services = [
   },
   {
     key: "Offshore",
-    label: "Offshore Complex",
+    label: "Offshore Projects",
     tag: "SECTOR B · TOPSIDE · SUBSEA",
     image: "/home/service-overview/offshore.jpg",
     points: [
