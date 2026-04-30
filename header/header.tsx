@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export const menuItems = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/#" },
+  { label: "About", href: "/about" },
   { label: "Services", href: "/products", hasDropdown: true },
   { label: "Blogs", href: "/#" },
 ];
