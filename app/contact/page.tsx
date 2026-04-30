@@ -1,291 +1,256 @@
 "use client";
-import React, { useState } from "react";
 
-const services = [
-  "Residential",
-  "Commercial",
-  "Off-plan",
-  "Holiday Homes",
-  "Investment",
-  "New Launches",
-];
+import { ArrowUpRight } from "lucide-react";
+import { useState } from "react";
 
-const ContactPage = () => {
-  const [selected, setSelected] = useState<string[]>(["Residential"]);
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+const INQUIRY_TYPES = ["Offshore", "Onshore"];
 
-  const toggleService = (s: string) =>
-    setSelected((prev) =>
-      prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
-    );
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-    }, 1200);
-  };
+export default function ContactPage() {
+  const [inquiry, setInquiry] = useState("General");
+  const [newsletter, setNewsletter] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#faf8f5] font-['DM_Sans',sans-serif]">
-      <div className="grid grid-cols-2 min-h-[calc(100vh-62px)]">
-        {/* LEFT */}
-        <div className="relative px-12 py-[72px] pr-16 border-r border-black/[0.08] overflow-hidden">
-          {/* Glow */}
-          <div className="absolute -top-20 -left-20 w-[340px] h-[340px] rounded-full bg-[radial-gradient(circle,rgba(181,134,74,0.09)_0%,transparent_70%)] pointer-events-none" />
-
-          <div className="flex items-center gap-2.5 mb-5 text-[#b5864a] text-[10px] font-medium tracking-[0.2em] uppercase">
-            <span className="w-7 h-px bg-[#b5864a]" />
-            Get in Touch
-          </div>
-
-          <h1 className="font-['Cormorant_Garamond',serif] text-[60px] font-light leading-[1.06] text-[#1c1814] mb-7">
-            Let's start
-            <br />a <em className="italic text-[#b5864a]">conversation.</em>
-          </h1>
-
-          <p className="text-[13px] text-[#1c1814]/42 leading-[1.75] max-w-[360px] mb-14">
-            Whether you're exploring your first investment or expanding a
-            portfolio, our advisors are here to guide you toward your ideal
-            property.
-          </p>
-
-          <div className="flex flex-col gap-7">
-            {[
-              {
-                label: "Phone",
-                value: "+971 4 000 0000",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-                  />
-                ),
-              },
-              {
-                label: "Email",
-                value: "hello@aurum.ae",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                  />
-                ),
-              },
-              {
-                label: "Office",
-                value: "Downtown Dubai, UAE",
-                icon: (
-                  <>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                    />
-                  </>
-                ),
-              },
-              {
-                label: "Hours",
-                value: "Mon–Sat, 9am – 7pm GST",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                ),
-              },
-            ].map(({ label, value, icon }) => (
-              <div key={label} className="flex gap-4 items-start">
-                <div className="w-[38px] h-[38px] flex-shrink-0 border border-black/[0.1] rounded-[10px] bg-white flex items-center justify-center">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#b5864a"
-                    strokeWidth="1.5"
-                    className="w-4 h-4"
-                  >
-                    {icon}
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-[9px] font-medium tracking-[0.14em] uppercase text-[#1c1814]/40 mb-0.5">
-                    {label}
-                  </p>
-                  <p className="text-[13px] text-[#1c1814]">{value}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="my-12 h-px bg-black/[0.08]" />
-
-          <div className="flex gap-2.5">
-            {["Instagram", "LinkedIn", "Twitter"].map((s) => (
-              <a
-                key={s}
-                href="#"
-                className="flex items-center gap-1.5 px-4 py-1.5 border border-black/[0.1] rounded-full text-[11px] text-[#1c1814]/40 hover:border-[#b5864a] hover:text-[#b5864a] hover:bg-[#b5864a]/10 transition-all duration-200"
-              >
-                {s}
-              </a>
-            ))}
-          </div>
+    <main
+      className="min-h-screen  font-sans"
+      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+    >
+      {/* ── Hero / Contact Section ── */}
+      <section className="relative pt-18 overflow-hidden">
+        {/* Background image with overlay */}
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1578356058390-f58c575337a2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Luxury resort"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60" />
         </div>
 
-        {/* RIGHT */}
-        <div className="px-16 py-[72px] pl-12 flex flex-col justify-center">
-          <h2 className="font-['Cormorant_Garamond',serif] text-[28px] font-light text-[#1c1814] mb-2">
-            Send us a message
-          </h2>
-          <p className="text-[12px] text-[#1c1814]/40 mb-11 leading-relaxed">
-            We typically respond within one business day.
-          </p>
-
-          <form onSubmit={handleSubmit} className="flex flex-col">
-            <div className="grid grid-cols-2 gap-5">
-              {["First Name", "Last Name"].map((f) => (
-                <div key={f} className="flex flex-col mb-5">
-                  <label className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#1c1814]/40 mb-2">
-                    {f}
-                  </label>
-                  <input
-                    type="text"
-                    placeholder={f === "First Name" ? "James" : "Anderson"}
-                    className="bg-white border border-black/[0.1] rounded px-4 py-3 text-[13px] text-[#1c1814] outline-none focus:border-[#b5864a] focus:ring-2 focus:ring-[#b5864a]/10 transition-all placeholder:text-[#1c1814]/20"
-                    required={f === "First Name"}
-                  />
-                </div>
-              ))}
-            </div>
-
-            {[
-              {
-                label: "Email Address",
-                type: "email",
-                placeholder: "james@example.com",
-                required: true,
-              },
-              {
-                label: "Phone Number",
-                type: "tel",
-                placeholder: "+971 00 000 0000",
-              },
-            ].map((f) => (
-              <div key={f.label} className="flex flex-col mb-5">
-                <label className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#1c1814]/40 mb-2">
-                  {f.label}
-                </label>
-                <input
-                  type={f.type}
-                  placeholder={f.placeholder}
-                  required={f.required}
-                  className="bg-white border border-black/[0.1] rounded px-4 py-3 text-[13px] text-[#1c1814] outline-none focus:border-[#b5864a] focus:ring-2 focus:ring-[#b5864a]/10 transition-all placeholder:text-[#1c1814]/20"
-                />
-              </div>
-            ))}
-
-            <div className="flex flex-col mb-5">
-              <label className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#1c1814]/40 mb-2">
-                Budget Range
-              </label>
-              <select className="bg-white border border-black/[0.1] rounded px-4 py-3 text-[13px] text-[#1c1814] outline-none focus:border-[#b5864a] focus:ring-2 focus:ring-[#b5864a]/10 transition-all appearance-none cursor-pointer">
-                <option value="" disabled>
-                  Select a range
-                </option>
-                {[
-                  "Under AED 1M",
-                  "AED 1M – 3M",
-                  "AED 3M – 7M",
-                  "AED 7M – 15M",
-                  "AED 15M+",
-                ].map((o) => (
-                  <option key={o}>{o}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="mb-5">
-              <p className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#1c1814]/40 mb-2.5">
-                I'm interested in
+        {/* Content grid */}
+        <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* LEFT — hero text + info */}
+          <div className="text-white pt-4 h-full flex flex-col">
+            {/* Heading */}
+            <div>
+              <h1
+                className="text-5xl lg:text-6xl font-light leading-tight mb-6 tracking-tight"
+                style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              >
+                You Have Questions,
+                <br />
+                <span className="italic">We Have Answers</span>
+              </h1>
+              <p
+                className="text-white/60 text-sm leading-relaxed max-w-md mb-16"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                Discover experiences you won&apos;t find anywhere else —
+                thoughtfully designed to immerse you in the heart of the
+                destination. Soulful stories waiting to be lived.
               </p>
-              <div className="flex flex-wrap gap-2">
-                {services.map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => toggleService(s)}
-                    className={`px-3.5 py-1.5 rounded-full text-[11px] border transition-all duration-200 ${selected.includes(s) ? "border-[#b5864a] text-[#b5864a] bg-[#b5864a]/10 font-medium" : "border-black/[0.1] text-[#1c1814]/40 hover:border-[#b5864a] hover:text-[#b5864a]"}`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
             </div>
 
-            <div className="flex flex-col mb-7">
-              <label className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#1c1814]/40 mb-2">
-                Message
-              </label>
-              <textarea
-                rows={4}
-                placeholder="Tell us about your property goals…"
-                className="bg-white border border-black/[0.1] rounded px-4 py-3 text-[13px] text-[#1c1814] outline-none focus:border-[#b5864a] focus:ring-2 focus:ring-[#b5864a]/10 transition-all resize-none leading-relaxed placeholder:text-[#1c1814]/20"
+            {/* Info grid */}
+            <div
+              className="grid grid-cols-2 gap-x-8 gap-y-8 text-sm mt-auto"
+              style={{ fontFamily: "'DM Sans', sans-serif" }}
+            >
+              <div>
+                <p className="text-white/40 uppercase tracking-widest text-xs mb-3">
+                  Location
+                </p>
+                <p className="text-white/80 leading-relaxed">
+                  Churchill Tower Business Bay, Dubai- UAE
+                </p>
+              </div>
+              <div>
+                <p className="text-white/40 uppercase tracking-widest text-xs mb-3">
+                  Social Media
+                </p>
+                <div className="flex  gap-3">
+                  {["Instagram", "LinkedIn", "Facebook", "TikTok"].map((s) => (
+                    <a
+                      key={s}
+                      href="#"
+                      className="text-white/70 hover:text-white transition-colors text-sm"
+                    >
+                      {s}
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="text-white/40 uppercase tracking-widest text-xs mb-3">
+                  Email
+                </p>
+                <a
+                  href="mailto:stay@anantararesort.com"
+                  className="text-white/80 hover:text-white transition-colors text-sm"
+                >
+                  info@morzglobal.com
+                </a>
+              </div>
+              <div>
+                <p className="text-white/40 uppercase tracking-widest text-xs mb-3">
+                  Contact
+                </p>
+                <a
+                  href="tel:+6677123456"
+                  className="text-white/80 hover:text-white transition-colors text-sm"
+                >
+                  +971 50 739 0680
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT — white form card */}
+          <div
+            className="bg-white rounded-2xl p-8 shadow-2xl"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            <h2
+              className="text-2xl font-semibold text-gray-900 mb-1"
+              style={{ fontFamily: "'Cormorant Garamond', sans-serif" }}
+            >
+              Tell Us What You Need
+            </h2>
+            <p className="text-sm text-gray-400 mb-7">
+              Our team is ready to assist you with every detail, big or small.
+            </p>
+
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <input
+                type="text"
+                placeholder="First Name"
+                className="border border-gray-200 rounded-full px-4 py-3 text-sm outline-none focus:border-gray-400 placeholder-gray-400 transition-colors"
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                className="border border-gray-200 rounded-full px-4 py-3 text-sm outline-none focus:border-gray-400 placeholder-gray-400 transition-colors"
               />
             </div>
 
-            <div className="flex items-center gap-5">
-              <button
-                type="submit"
-                disabled={loading || submitted}
-                className="flex-shrink-0 px-10 py-4 bg-[#1c1814] hover:bg-[#b5864a] text-[#faf8f5] text-[11px] font-medium tracking-[0.14em] uppercase rounded-sm transition-colors duration-300 disabled:opacity-60"
-              >
-                {submitted ? "Sent ✓" : loading ? "Sending…" : "Send Message"}
-              </button>
-              <p className="text-[11px] text-[#1c1814]/35 leading-snug">
-                Your data is safe.
-                <br />
-                We never share your information.
-              </p>
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <input
+                type="text"
+                placeholder="Country"
+                className="border border-gray-200 rounded-full px-4 py-3 text-sm outline-none focus:border-gray-400 placeholder-gray-400 transition-colors"
+              />
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                className="border border-gray-200 rounded-full px-4 py-3 text-sm outline-none focus:border-gray-400 placeholder-gray-400 transition-colors"
+              />
             </div>
 
-            {submitted && (
-              <div className="mt-4 px-5 py-4 bg-[#b5864a]/08 border border-[#b5864a]/30 rounded text-[13px] text-[#1c1814] leading-relaxed">
-                <strong className="text-[#b5864a]">Message received!</strong>{" "}
-                One of our advisors will be in touch within one business day.
-              </div>
-            )}
-          </form>
-
-          {/* Map Strip */}
-          <div className="mt-12 h-[120px] rounded-md bg-gradient-to-br from-[#ede8e0] to-[#ddd5c8] border border-black/[0.08] flex items-center justify-center cursor-pointer relative overflow-hidden">
-            <div
-              className="absolute inset-0 opacity-50"
-              style={{
-                backgroundImage:
-                  "repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(0,0,0,0.04) 28px,rgba(0,0,0,0.04) 29px),repeating-linear-gradient(90deg,transparent,transparent 28px,rgba(0,0,0,0.04) 28px,rgba(0,0,0,0.04) 29px)",
-              }}
+            <input
+              type="email"
+              placeholder="Email Address"
+              className="w-full border border-gray-200 rounded-full px-4 py-3 text-sm outline-none focus:border-gray-400 placeholder-gray-400 mb-5 transition-colors"
             />
-            <div className="relative z-10 flex items-center gap-2.5 bg-white px-4 py-2 rounded-full border border-black/[0.08] text-[11px] font-medium tracking-[0.1em] uppercase text-[#1c1814]/40">
-              <span className="w-2 h-2 rounded-full bg-[#b5864a] animate-pulse" />
-              Downtown Dubai, UAE
+
+            {/* Inquiry type */}
+            <p className="text-sm font-medium text-gray-700 mb-3">
+              Type of Inquiry
+            </p>
+            <div className="flex flex-wrap gap-2 mb-5">
+              {INQUIRY_TYPES.map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setInquiry(type)}
+                  className={`px-4 py-1.5 rounded-full text-sm border transition-all ${
+                    inquiry === type
+                      ? "bg-secondary text-white border-secondary.80"
+                      : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
+                  }`}
+                >
+                  {type}
+                </button>
+              ))}
             </div>
+
+            {/* Message */}
+            <textarea
+              placeholder="Message"
+              rows={5}
+              className="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm outline-none focus:border-gray-400 placeholder-gray-400 resize-none mb-5 transition-colors"
+            />
+
+            {/* Newsletter */}
+            <label className="flex items-center gap-2.5 mb-6 cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={newsletter}
+                onChange={(e) => setNewsletter(e.target.checked)}
+                className="w-4 h-4 accent-gray-900 cursor-pointer"
+              />
+              <span className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors">
+                I&apos;d like to receive exclusive offers and updates
+              </span>
+            </label>
+
+            <button className="w-full bg-primary border border-gray-300 hover:bg-gray-900 hover:text-white hover:border-gray-900 text-gray-50 rounded-full py-3.5 text-sm font-medium transition-all duration-300 tracking-wide">
+              Submit
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <LocationSection />
+    </main>
+  );
+}
+
+function LocationSection() {
+  return (
+    <section className="w-full pt-24 px-4">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.2fr_.8fr] gap-6">
+        {/* LEFT: Map */}
+        <div className="relative rounded-2xl overflow-hidden h-[320px] lg:h-[420px] bg-gray-200">
+          {/* Fake map image (replace with real map or iframe) */}
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1499.271466566598!2d55.26206505851963!3d25.1811835565225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f69ce4be99a07%3A0xe359738b5b1bb1d3!2sChurchill%20Tower%20-%20Al%20Amal%20St%20-%20Business%20Bay%20-%20Dubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2sin!4v1777533493430!5m2!1sen!2sin"
+            width="600"
+            height="450"
+            loading="lazy"
+            className="w-full"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        {/* RIGHT: Location Card */}
+        <div className="relative rounded-2xl overflow-hidden h-[320px] lg:h-[420px]">
+          {/* Background Image */}
+          <img
+            src="https://www.eni.ae/wp-content/uploads/2019/04/image-5-1.jpg"
+            alt="location"
+            className="w-full h-full object-cover"
+          />
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/60" />
+
+          {/* Content */}
+          <div className="absolute inset-0 flex flex-col justify-center px-8 text-white">
+            <h2
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+              className="text-3xl lg:text-5xl font-light mb-3 tracking-wide"
+            >
+              Our Location
+            </h2>
+            <p className="text-white/80 mb-6 text-sm lg:text-base">
+              Churchill Tower Business Bay, Dubai- UAE
+            </p>
+
+            <button className="bg-primary hover:bg-primary/90 transition px-6 py-3 rounded-full text-sm font-semibold w-fit flex items-center gap-2">
+              View Location
+              <ArrowUpRight />
+            </button>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
-};
-
-export default ContactPage;
+}
