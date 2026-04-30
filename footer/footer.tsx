@@ -199,7 +199,7 @@ function CTACard() {
             with precision engineering
           </h2>
           <p className="text-xs text-[#888888]">
-            Partner with Morz Global for reliable, high-performance machinery
+            Partner with Morz Global for reliable, high-performance engineering
             solutions built to last.
           </p>
         </div>
