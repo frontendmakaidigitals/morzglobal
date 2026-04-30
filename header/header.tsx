@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Logo from "@/pages/components/Logo";
 import Menu from "./menu";
 import MobileMenu from "./mobile-menu";
+import Link from "next/link";
 
 export const menuItems = [
   { label: "Home", href: "/" },
@@ -75,9 +76,11 @@ const Header = () => {
         <div className="block lg:hidden">
           <MobileMenu />
         </div>
-        <button className="hidden lg:block text-sm font-medium uppercase   bg-primary text-white hover:bg-primary/80 px-5 py-3 rounded-[2px] transition-all duration-200 hover:scale-[1.03] cursor-pointer">
-          Contact Us
-        </button>
+        <Link href={'/contact'}>
+          <button className="hidden lg:block text-sm font-medium uppercase   bg-primary text-white hover:bg-primary/80 px-5 py-3 rounded-[2px] transition-all duration-200 hover:scale-[1.03] cursor-pointer">
+            Contact Us
+          </button>
+        </Link>
       </div>
     </header>
   );
