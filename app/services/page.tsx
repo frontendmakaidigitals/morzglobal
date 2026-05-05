@@ -446,27 +446,28 @@ export default function ServicesPage() {
       <ServiceSection
         service={offshore}
         sectionId="offshore"
-        bgColor="bg-white"
-        cardBg="bg-gray-400"
-        textColor="text-black"
-        accentBg="bg-gray-300"
+        bgColor="bg-[#0d1a2b]"
+        cardBg="bg-[#0f2236]"
+        textColor="text-white"
+        accentBg="bg-[#1e7fc2]"
       />
 
       <ServiceSection
         service={onshore}
         sectionId="onshore"
-        bgColor="bg-gray-300"
-        cardBg="bg-[#b07d22]"
+        bgColor="bg-[#0f2236]"
+        cardBg="bg-[#0d1a2b]"
         textColor="text-white"
-        accentBg="bg-white"
+        accentBg="bg-[#3dba5a]"
       />
+
       <ServiceSection
         service={bim}
         sectionId="bim"
-        bgColor="bg-gray-300"
-        cardBg="bg-[#b07d22]"
+        bgColor="bg-[#0a1520]"
+        cardBg="bg-[#0f2236]"
         textColor="text-white"
-        accentBg="bg-white"
+        accentBg="bg-[#1e7fc2]"
       />
       <FAQSection />
     </main>
