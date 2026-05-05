@@ -4,7 +4,7 @@ import Logo from "@/pages/components/Logo";
 import Menu from "./menu";
 import MobileMenu from "./mobile-menu";
 import Link from "next/link";
-
+import Image from "next/image";
 export const menuItems = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
@@ -77,6 +77,23 @@ const Header = () => {
         <div className="block lg:hidden">
           <MobileMenu />
         </div>
+        <a
+          href="https://wa.me/971503785060?text=Hi%20I%20want%20to%20know%20more"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden lg:block"
+        >
+          <div className="bg-[#16a74b] hover:bg-[#0ebf4f] rounded flex items-center gap-2 px-2 py-1.5">
+            <Image
+              src="/whatsapp.png"
+              alt="whatsapp"
+              width={18}
+              height={18}
+              className="size-8! w-full h-full object-contain"
+            />
+            <span className="text-gray-50 font-medium">Whatsapp chat</span>
+          </div>
+        </a>
       </div>
     </header>
   );
