@@ -10,6 +10,7 @@ export const menuItems = [
   { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Blogs", href: "/#" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const productItems = [
@@ -76,11 +77,6 @@ const Header = () => {
         <div className="block lg:hidden">
           <MobileMenu />
         </div>
-        <Link href={"/contact"} className="hidden lg:block">
-          <button className=" text-sm font-medium uppercase   bg-primary text-white hover:bg-primary/80 px-5 py-3 rounded-[2px] transition-all duration-200 hover:scale-[1.03] cursor-pointer">
-            Contact Us
-          </button>
-        </Link>
       </div>
     </header>
   );
