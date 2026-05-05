@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Footer from "@/footer/footer";
 import Header from "@/header/header";
 import SmoothScrollProvider from "./smooth-scrollprovder";
+import BackToTop from "@/pages/components/to-top";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
@@ -45,7 +46,8 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
-          <Header />
+        <BackToTop />
+        <Header />
         <SmoothScrollProvider>
           {children}
 

@@ -152,7 +152,7 @@ const Menu = () => {
   }, []);
 
   return (
-    <nav className="hidden lg:flex items-center gap-1">
+    <nav className="hidden border border-white/10 bg-black/50 rounded p-2 lg:flex items-center gap-1">
       {menuItems.map((item, index) => {
         const isActive =
           pathname === item.href ||

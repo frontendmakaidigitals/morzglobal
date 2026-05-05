@@ -434,6 +434,33 @@ function ServiceSection({
    PAGE
 ───────────────────────────────────────────────────────────── */
 export default function ServicesPage() {
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+
+    const init = async () => {
+      const { ScrollSmoother } = await import("gsap/ScrollSmoother");
+      const getSmoother = () =>
+        new Promise<ReturnType<typeof ScrollSmoother.get>>((resolve) => {
+          const id = setInterval(() => {
+            const s = ScrollSmoother.get();
+            if (s) {
+              clearInterval(id);
+              resolve(s);
+            }
+          }, 30);
+        });
+
+      const smoother = await getSmoother();
+      const target = document.querySelector(hash);
+      if (target && smoother) {
+        smoother.scrollTo(target, true);
+      }
+    };
+
+    // Wait for page + smoother to be ready
+    setTimeout(init, 300);
+  }, []);
   return (
     <main className="font-sans">
       <HeroSection />

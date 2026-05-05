@@ -1,5 +1,5 @@
 "use client";
-
+import { Mail, MapPin, Phone } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,43 +10,54 @@ gsap.registerPlugin(ScrollTrigger);
 
 const footerColumns = [
   {
-    title: "Product",
-    links: ["Import From Figma", "Design", "Animate", "Collaborate", "Export"],
-  },
-  {
-    title: "Templates",
+    title: "Offshore",
     links: [
-      "Community",
-      "Devices",
-      "Text Animations",
-      "Logos",
-      "Animated Icons",
-      "Charts",
+      "Detail Engineering (EPC Stage)",
+      "Brownfield Modifications",
+      "Structural Studies",
+      "Topside and Jacket Design",
+      "Lifting and load out plan",
+      "Sea Fastening Designs",
+      "Process & Process Safety Engineering",
+      "Mechanical (Static & Rotary) Engineering",
+      "Piping Engineering",
+      "Electrical Engineering",
+      "Instrumentation Engineering",
+      "Civil/Structural Engineering",
+      "Project Management & Project Planning",
+      "Cost Estimation & Budgeting",
+      "3D Modelling",
+      "As-built Drawings",
     ],
+    link: "/services#offshore",
   },
   {
-    title: "Resources",
+    title: "Onshore",
     links: [
-      { label: "Pricing" },
-      { label: "Join Our Discord", arrow: true },
-      { label: "Documentation", arrow: true },
-      { label: "Tutorials", arrow: true },
-      { label: "Hire An Expert", arrow: true },
-      { label: "Changelog" },
+      "Detail Engineering (EPC Stage)",
+      "Brownfield Modifications",
+      "Process & Safety Engineering",
+      "Mechanical (Static & Rotary) Engineering",
+      "Piping and Pipeline Engineering",
+      "Electrical Engineering",
+      "Instrumentation Engineering",
+      "Civil/Structural Engineering",
+      "Substation Design",
+      "Project Management & Project Planning",
+      "Cost Estimation & Budgeting",
+      "3D Modelling",
+      "As-built Drawings",
     ],
+    link: "/services#onshore",
   },
   {
-    title: "Company",
+    title: "Bim",
     links: [
-      { label: "Customers" },
-      { label: "Terms & Conditions" },
-      { label: "Privacy Policy" },
-      { label: "Careers", arrow: true },
+      "BIM Modelling",
+      "Scan to Drawing Conversion",
+      "Laser Scan Services",
     ],
-  },
-  {
-    title: "Connect",
-    links: ["Sales", "Support"],
+    link: "/services#bim",
   },
 ];
 
@@ -129,43 +140,94 @@ export default function Footer() {
       <div className="flex-1" />
 
       {/* Footer */}
-      <footer className="anim-footer-body px-10 pb-10 pt-52 grid grid-cols-1 lg:grid-cols-[auto_auto] container">
-        <div className="anim-logo opacity-0 flex flex-col gap-3">
-          <Logo light />
-          <p className="text-xs text-gray-50/70 max-w-xs leading-relaxed font-light">
-            Delivering advanced industrial engineering solutions with a focus on
-            performance, safety, and reliability.
-          </p>
-        </div>
+      <footer className="anim-footer-body px-10 pb-10 pt-52 container">
+        <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-10">
+          {/* Left — logo + description */}
+          <div className="anim-logo opacity-0 flex flex-col gap-3">
+            <Logo light />
+            <p className="text-xs text-gray-50/70 max-w-2xs leading-relaxed font-light">
+              Delivering advanced industrial engineering solutions with a focus
+              on performance, safety, and reliability.
+            </p>
+          </div>
 
-        {/* Columns */}
-        <div className="mt-10 lg:mt-0 grid grid-cols-2 md:grid-cols-5 gap-10 mb-16 max-w-5xl">
-          {footerColumns.map((col) => (
-            <div key={col.title} className="anim-col opacity-0">
-              <p className="text-xs font-semibold text-gray-100 mb-4 tracking-wide uppercase">
-                {col.title}
-              </p>
-              <ul className="space-y-2.5">
-                {col.links.map((link) => {
-                  const label = typeof link === "string" ? link : link.label;
-                  const arrow = typeof link === "object" && link.arrow;
-                  return (
-                    <li key={label}>
-                      <a className="text-sm text-gray-200 hover:text-gray-300 transition flex items-center gap-1 cursor-pointer">
-                        {label}
-                        {arrow && <span className="text-xs opacity-70">↗</span>}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
+          {/* Right — columns + contact */}
+          <div className="mt-10 lg:mt-0">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
+              {/* Link columns */}
+              {footerColumns.map((col) => (
+                <div key={col.title} className="anim-col opacity-0">
+                  <p className="text-xs font-semibold text-gray-100 mb-4 tracking-wide uppercase">
+                    {col.title}
+                  </p>
+                  <ul className="space-y-2.5">
+                    {col.links.map((link) => {
+                      const isObject = typeof link === "object";
+                      const label = isObject ? (link as any).label : link;
+                      const href = isObject ? (link as any).href : "#";
+                      return (
+                        <li key={label}>
+                          <a
+                            href={col.link}
+                            className="group text-sm text-gray-200 hover:text-white transition flex items-center gap-1 cursor-pointer w-fit"
+                          >
+                            <span className="relative">
+                              {label}
+                              {/* underline animation */}
+                              <span className="absolute left-0 -bottom-px h-px w-0 bg-white group-hover:w-full transition-all duration-300 ease-out" />
+                            </span>
+                            {isObject && (
+                              <span className="text-xs opacity-70">↗</span>
+                            )}
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+
+              {/* Contact — 4th column in the same grid */}
+              <div className="anim-col opacity-0">
+                <p className="text-xs font-semibold text-gray-100 mb-4 tracking-wide uppercase">
+                  Get in Touch
+                </p>
+                <div className="flex flex-col gap-4">
+                  <a
+                    href="mailto:mohammed@morzglobal.com"
+                    className="flex items-center gap-3 text-sm text-gray-200 hover:text-white transition group"
+                  >
+                    <span className="w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/20 flex items-center justify-center shrink-0 transition">
+                      <Mail size={14} />
+                    </span>
+                    info@morzglobal.com
+                  </a>
+
+                  <div className="flex items-center gap-3 text-sm text-gray-200">
+                    <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                      <MapPin size={14} />
+                    </span>
+                    Churchill Tower Business Bay, Dubai- UAE
+                  </div>
+
+                  <a
+                    href="tel:+971503785060"
+                    className="flex items-center gap-3 text-sm text-gray-200 hover:text-white transition group"
+                  >
+                    <span className="w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/20 flex items-center justify-center shrink-0 transition">
+                      <Phone size={14} />
+                    </span>
+                    +971 50 739 0680
+                  </a>
+                </div>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
       </footer>
 
-      {/* Bottom */}
-      <div className="anim-bottom  bg-primary">
+      {/* Bottom bar */}
+      <div className="anim-bottom bg-primary">
         <div className="container border-gray-50 py-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <span className="text-xs text-gray-50">
             © MORZ Global 2026. All rights reserved
