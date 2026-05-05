@@ -373,7 +373,7 @@ function ServiceSection({
       <div className="flex flex-col lg:flex-row">
         <div
           ref={titleColRef}
-          className="lg:w-72 xl:w-80 shrink-0 px-6 pt-10 pb-0 lg:px-10 lg:pt-14 lg:pb-14 flex items-start"
+          className="lg:w-72 xl:w-80  shrink-0 px-6 pt-10 pb-0 lg:px-10 lg:pt-40 lg:pb-14 flex items-start"
         >
           <div ref={headerRef} className="w-full">
             <div className="flex items-center gap-3 mb-4">
