@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSmootherReady } from "@/app/smoother-context";
 import Logo from "@/pages/components/Logo";
 import Image from "next/image";
+import Link from "next/link";
 gsap.registerPlugin(ScrollTrigger);
 
 const footerColumns = [
@@ -167,7 +168,7 @@ export default function Footer() {
                       const href = isObject ? (link as any).href : "#";
                       return (
                         <li key={label}>
-                          <a
+                          <Link
                             href={col.link}
                             className="group text-sm text-gray-200 hover:text-white transition flex items-center gap-1 cursor-pointer w-fit"
                           >
@@ -179,7 +180,7 @@ export default function Footer() {
                             {isObject && (
                               <span className="text-xs opacity-70">↗</span>
                             )}
-                          </a>
+                          </Link>
                         </li>
                       );
                     })}
