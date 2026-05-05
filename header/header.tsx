@@ -76,8 +76,8 @@ const Header = () => {
         <div className="block lg:hidden">
           <MobileMenu />
         </div>
-        <Link href={'/contact'}>
-          <button className="hidden lg:block text-sm font-medium uppercase   bg-primary text-white hover:bg-primary/80 px-5 py-3 rounded-[2px] transition-all duration-200 hover:scale-[1.03] cursor-pointer">
+        <Link href={'/contact'} className="hidden lg:block">
+          <button className=" text-sm font-medium uppercase   bg-primary text-white hover:bg-primary/80 px-5 py-3 rounded-[2px] transition-all duration-200 hover:scale-[1.03] cursor-pointer">
             Contact Us
           </button>
         </Link>

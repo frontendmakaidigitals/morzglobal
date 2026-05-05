@@ -236,13 +236,8 @@ function HeroSection() {
       {/* Content — centered */}
       <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-6">
         <div className="text-white max-w-5xl w-full">
-          {/* Eyebrow */}
-          <p className="hero-eyebrow text-sm font-medium tracking-widest uppercase text-white/70 mb-4">
-            Sustainable Engineering
-          </p>
-
           {/* Headline */}
-          <h2 className="  mb-6 text-5xl font-light tracking-tighter md:text-7xl flex flex-wrap justify-center gap-x-[0.15em] gap-y-1">
+          <h2 className="  mb-6 text-4xl font-light tracking-tighter md:text-7xl flex flex-wrap justify-center gap-x-[0.15em] gap-y-1">
             {words.map((word, i) => (
               <span
                 key={i}
@@ -259,7 +254,7 @@ function HeroSection() {
           </h2>
 
           {/* Body */}
-          <p className="hero-body text-white/70 leading-relaxed mb-8 max-w-xl mx-auto">
+          <p className="hero-body text-sm lg:text-md text-white/70 leading-relaxed mb-8 max-w-xl mx-auto">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste enim
             incidunt maiores minus porro sint accusantium temporibus amet itaque
             pariatur unde voluptate harum aperiam soluta ad, esse ut non
