@@ -5,7 +5,7 @@ import { ArrowRight, CheckCircle } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSmootherReady } from "@/app/smoother-context";
-
+import Link from "next/link";
 gsap.registerPlugin(ScrollTrigger);
 
 const points = [
@@ -173,9 +173,11 @@ export default function AboutSection() {
               Learn more
               <ArrowRight />
             </button>
-            <button className="text-sm text-[#AAA49E] hover:text-[#1A1714] border-b border-[#D9D4CE] hover:border-[#1A1714] pb-px transition-colors duration-200">
-              View our services
-            </button>
+            <Link href={"/services"}>
+              <button className="text-sm text-[#AAA49E] hover:text-[#1A1714] border-b border-[#D9D4CE] hover:border-[#1A1714] pb-px transition-colors duration-200">
+                View our services
+              </button>
+            </Link>
           </div>
         </div>
       </div>
