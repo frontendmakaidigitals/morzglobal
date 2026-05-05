@@ -98,7 +98,7 @@ export default function AboutSection() {
         >
           <img
             ref={imgRef}
-            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80"
+            src="/home/about.jpeg"
             alt="Engineering"
             className="w-full h-full object-cover opacity-90 mix-blend-multiply transition-transform duration-700 group-hover:scale-105"
           />
@@ -174,7 +174,7 @@ export default function AboutSection() {
               <ArrowRight />
             </button>
             <button className="text-sm text-[#AAA49E] hover:text-[#1A1714] border-b border-[#D9D4CE] hover:border-[#1A1714] pb-px transition-colors duration-200">
-              View our work
+              View our services
             </button>
           </div>
         </div>
