@@ -158,23 +158,6 @@ const Menu = () => {
           pathname === item.href ||
           (pathname?.startsWith(item.href + "/") ?? false);
 
-        if (item.hasDropdown) {
-          return (
-            <div key={item.href} ref={dropRef} className="relative">
-              <button
-                className={`relative flex items-center gap-1 tracking-[0.08em] px-3.5 py-1.5 transition-colors duration-200
-                  after:absolute after:left-3.5 after:right-3.5 after:bottom-0.5 after:h-px after:bg-white/80
-                  after:origin-left after:transition-transform after:duration-300
-                  ${isActive || dropOpen ? "text-white after:scale-x-100" : "text-white/70 hover:text-white after:scale-x-0 hover:after:scale-x-100"}`}
-              >
-                {item.label}
-                <ChevronDown className="size-5" />
-              </button>
-              <ProductsDropdown open={dropOpen} />
-            </div>
-          );
-        }
-
         return (
           <Link
             key={index}
