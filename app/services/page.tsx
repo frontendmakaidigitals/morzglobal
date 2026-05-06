@@ -14,7 +14,7 @@ const offshore = {
   points: [
     {
       label: "Detail Engineering (EPC Stage)",
-      image: "/offshore/Detailed enginnering.jpg",
+      image: "/offshore/detail engineering.jpg",
     },
     {
       label: "Brownfield Modifications",
