@@ -78,7 +78,7 @@ const Header = () => {
           <MobileMenu />
         </div>
         <a
-          href="https://wa.me/971503785060?text=Hi%20I%20want%20to%20know%20more"
+          href="https://wa.me/971508287918?text=Hi%20I%20want%20to%20know%20more"
           target="_blank"
           rel="noopener noreferrer"
           className="hidden lg:block"
