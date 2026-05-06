@@ -30,7 +30,7 @@ const offshore = {
     },
     {
       label: "Mechanical (Static & Rotary) Engineering",
-      image: "/offshore/mechanical-static-rotary.jpg",
+      image: "/offshore/mechanical-engieneering.jpeg",
     },
     { label: "Piping Engineering", image: "/offshore/piping.jpg" },
     {
@@ -39,7 +39,7 @@ const offshore = {
     },
     {
       label: "Instrumentation Engineering",
-      image: "/offshore/Instrument.jpg",
+      image: "/offshore/instrument.jpeg",
     },
     {
       label: "Civil/Structural Engineering",
@@ -76,7 +76,7 @@ const onshore = {
     },
     {
       label: "Mechanical (Static & Rotary) Engineering",
-      image: "/onshore/Mechanical.jpg",
+      image: "/onshore/mechanical-engieneering.jpeg",
     },
     {
       label: "Piping and Pipeline Engineering",
@@ -88,7 +88,7 @@ const onshore = {
     },
     {
       label: "Instrumentation Engineering",
-      image: "/onshore/instrumention.jpg",
+      image: "/onshore/instrument.jpeg",
     },
     {
       label: "Civil/Structural Engineering",
