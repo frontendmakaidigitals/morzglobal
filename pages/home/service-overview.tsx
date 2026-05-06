@@ -7,10 +7,10 @@ const services = [
     key: "onshore",
     label: "Onshore Projects",
     tag: "SECTOR A · EPC · BROWNFIELD",
-    image: "/home/service-overview/onshore.jpg",
+    image: "/home/service-overview/onshore.jpeg",
     points: [
       "Detail Engineering (EPC Stage)",
-      "Brownfield Modifications",
+      "Solar Power Engineering",
       "Process & Safety Engineering",
       "Mechanical (Static & Rotary) Engineering",
       "Piping and Pipeline Engineering",
@@ -28,7 +28,7 @@ const services = [
     key: "Offshore",
     label: "Offshore Projects",
     tag: "SECTOR B · TOPSIDE · SUBSEA",
-    image: "/home/service-overview/offshore.jpg",
+    image: "/home/service-overview/offshore.jpeg",
     points: [
       "Detail Engineering (EPC Stage)",
       "Brownfield Modifications",

@@ -36,7 +36,7 @@ const footerColumns = [
     title: "Onshore",
     links: [
       "Detail Engineering (EPC Stage)",
-      "Brownfield Modifications",
+      "Solar Power Engineering",
       "Process & Safety Engineering",
       "Mechanical (Static & Rotary) Engineering",
       "Piping and Pipeline Engineering",

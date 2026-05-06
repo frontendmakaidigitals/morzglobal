@@ -86,7 +86,7 @@ export default function ContactForm() {
             {[
               {
                 label: "Call / Whatsapp US ",
-                lines: ["+971 55 974 3425"],
+                lines: ["+971 508287918"],
               },
               {
                 label: "Our Location",

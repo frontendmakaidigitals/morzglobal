@@ -47,7 +47,7 @@ const offshore = {
     { label: "Piping Engineering", image: "/offshore/piping.jpg" },
     {
       label: "Electrical Engineering",
-      image: "/offshore/electrical.jpg",
+      image: "/offshore/electrial engine.png",
     },
     {
       label: "Instrumentation Engineering",
@@ -80,8 +80,8 @@ const onshore = {
       image: "/onshore/detail engineering.jpg",
     },
     {
-      label: "Brownfield Modifications",
-      image: "/onshore/brownfield modification.jpg",
+      label: "Solar Power Engineering",
+      image: "/onshore/solar power engineering.jpg",
     },
     {
       label: "Process & Safety Engineering",
@@ -97,7 +97,7 @@ const onshore = {
     },
     {
       label: "Electrical Engineering",
-      image: "/onshore/electrical.jpg",
+      image: "/onshore/electrial engine.png",
     },
     {
       label: "Instrumentation Engineering",

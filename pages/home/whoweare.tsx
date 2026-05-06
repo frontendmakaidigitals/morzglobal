@@ -102,18 +102,6 @@ export default function AboutSection() {
             alt="Engineering"
             className="w-full h-full object-cover opacity-90 mix-blend-multiply transition-transform duration-700 group-hover:scale-105"
           />
-          <div
-            ref={badgeRef}
-            className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-between px-6 md:px-8 pb-6"
-          >
-            <span className="text-[11px] tracking-[0.1em] uppercase text-white/75">
-              Est. 2014 · Global Operations
-            </span>
-            <span className="flex items-center gap-1.5 text-[10px] font-medium tracking-[0.1em] uppercase text-white/60">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
-              Live projects
-            </span>
-          </div>
         </div>
 
         {/* RIGHT — content */}
@@ -142,16 +130,17 @@ export default function AboutSection() {
             ref={paraRef}
             className="text-sm leading-[1.85] text-[#7A7570] font-light mb-2"
           >
-            At Morz Global, we specialize in high-performance mechanical
-            machinery designed to meet the evolving demands of industrial
-            sectors. From oil & gas to manufacturing and energy, our solutions
-            combine advanced engineering, durability, and operational
-            efficiency.
+            MORZ Global is a multidisciplinary engineering consultancy
+            specializing in technically complex projects across the energy and
+            infrastructure sectors.
           </p>
           <p className="text-sm leading-[1.85] text-[#7A7570] font-light mb-6">
-            We focus on delivering systems that enhance safety, improve process
-            control, and ensure long-term performance—even in the most demanding
-            environments.
+            Our team of qualified engineers and project specialists deliver
+            focused, reliable solutions across onshore and offshore oil & gas,
+            power generation, solar energy, and civil works — supported by
+            advanced capabilities in 3D modelling, drafting, and technical
+            documentation. We are committed to bringing accuracy, efficiency,
+            and long-term value to every project we undertake.
           </p>
 
           <ul ref={listRef} className="space-y-3 mb-8">
