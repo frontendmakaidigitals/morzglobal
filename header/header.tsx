@@ -91,7 +91,7 @@ const Header = () => {
               height={18}
               className="size-8! w-full h-full object-contain"
             />
-            <span className="text-gray-50 font-medium">Whatsapp chat</span>
+            <span className="text-gray-50 font-medium">Whatsapp</span>
           </div>
         </a>
       </div>

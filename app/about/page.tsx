@@ -271,44 +271,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── SERVICES ── */}
-      <section className=" mt-28">
-        <div className="container">
-          <h2
-            className="text-4xl lg:text-5xl font-light text-[#0a1628] mb-3"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-          >
-            Full Range of Services
-          </h2>
-          <p className="text-gray-500 text-base mb-14 max-w-xl">
-            We offer comprehensive engineering, design, project management,
-            planning and consultancy services across all project phases.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-7 gap-y-10">
-            {services.map((s, i) => (
-              <div
-                key={i}
-                className={`group relative   aspect-[6/5] rounded-xl border transition-all duration-300 cursor-default overflow-hidden `}
-              >
-                <div className="absolute size-full inset-0 bg-black/10 z-10" />
-                <img
-                  src={
-                    "https://images.unsplash.com/photo-1624771002998-4aadfd43e7c4?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  }
-                  className="absolute inset-0 size-full"
-                />
-                <div className="w-full h-full  flex items-end">
-                  <p
-                    className={`relative z-10 bg-black/30 backdrop-blur-sm  p-6 w-full text-gray-50 font-poppins font-semibold leading-snug transition-all duration-300 `}
-                  >
-                    {s}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── VISION + MISSION ── */}
       <section className="bg-stone-900 py-20 mt-20">
