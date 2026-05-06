@@ -55,7 +55,7 @@ const offshore = {
     },
     {
       label: "Civil/Structural Engineering",
-      image: "/offshore/structural-engineering",
+      image: "/offshore/structural-engineering.jpg",
     },
     {
       label: "Project Management & Project Planning",
