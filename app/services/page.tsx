@@ -21,20 +21,8 @@ const offshore = {
       image: "/offshore/brownfield.jpg",
     },
     {
-      label: "Structural Studies",
-      image: "/offshore/Structural studies.jpg",
-    },
-    {
-      label: "Topside & Jacket Design",
-      image: "/offshore/topside-and-jacket.png",
-    },
-    {
       label: "Lifting & Load Out Plan",
-      image: "/offshore/Lifting and load.jpg",
-    },
-    {
-      label: "Sea Fastening Designs",
-      image: "/offshore/sea fastening.jpg",
+      image: "/offshore/Structural studies.jpg",
     },
     {
       label: "Process & Process Safety Engineering",
@@ -66,7 +54,6 @@ const offshore = {
       image: "/offshore/cost estimation.jpg",
     },
     { label: "3D Modelling", image: "/offshore/3d.jpg" },
-    { label: "As-built Drawings", image: "/offshore/asbuilt.webp" },
   ],
 };
 
@@ -107,7 +94,6 @@ const onshore = {
       label: "Civil/Structural Engineering",
       image: "/onshore/civil.jpg",
     },
-    { label: "Substation Design", image: "/onshore/sub station design .jpg" },
     {
       label: "Project Management & Project Planning",
       image: "/onshore/project planning.jpg",
@@ -117,7 +103,6 @@ const onshore = {
       image: "/onshore/cost estimation.jpg",
     },
     { label: "3D Modelling", image: "/onshore/3D-Design.jpg" },
-    { label: "As-built Drawings", image: "/onshore/asbuilt.jpg" },
   ],
 };
 
