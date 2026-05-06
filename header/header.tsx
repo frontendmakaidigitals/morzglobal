@@ -83,7 +83,7 @@ const Header = () => {
           rel="noopener noreferrer"
           className="hidden lg:block"
         >
-          <div className="bg-[#16a74b] hover:bg-[#0ebf4f] rounded flex items-center gap-2 px-2 py-1.5">
+          <div className="bg-[#16a74b] hover:bg-[#0ebf4f] rounded flex items-center gap-2 pl-2 pr-3 py-1.5">
             <Image
               src="/whatsapp.png"
               alt="whatsapp"
