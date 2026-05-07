@@ -1,19 +1,118 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSmootherReady } from "@/app/smoother-context";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const INQUIRY_TYPES = ["Offshore", "Onshore"];
+
+type FormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  country: string;
+  inquiryType: string;
+
+  message: string;
+};
+
+type FormErrors = Partial<Record<keyof FormData, string>>;
+
+function validate(data: FormData): FormErrors {
+  const errors: FormErrors = {};
+  if (!data.firstName.trim()) errors.firstName = "First name is required";
+  if (!data.lastName.trim()) errors.lastName = "Last name is required";
+  if (!data.email.trim()) {
+    errors.email = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+    errors.email = "Enter a valid email address";
+  }
+  if (!data.phone.trim()) errors.phone = "Phone is required";
+  if (!data.country.trim()) errors.country = "Country is required";
+  if (!data.inquiryType) errors.inquiryType = "Please select an inquiry type";
+  if (!data.message.trim()) errors.message = "Message is required";
+  return errors;
+}
+
 export default function ContactForm() {
   const smootherReady = useSmootherReady();
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  const [formData, setFormData] = useState<FormData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    country: "",
+    inquiryType: "",
+    message: "",
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name as keyof FormData]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  }
+
+  function handleInquiry(type: string) {
+    setFormData((prev) => ({ ...prev, inquiryType: type }));
+    if (errors.inquiryType)
+      setErrors((prev) => ({ ...prev, inquiryType: undefined }));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const validationErrors = validate(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          country: formData.country,
+          inquiryType: formData.inquiryType,
+          businessActivity: formData.message,
+        }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      setStatus("success");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        country: "",
+        inquiryType: "",
+        message: "",
+      });
+    } catch {
+      setStatus("error");
+    }
+  }
+
   useEffect(() => {
     if (!smootherReady) return;
-
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -22,7 +121,6 @@ export default function ContactForm() {
           toggleActions: "play none none none",
         },
       });
-
       tl.fromTo(
         ".cf-eyebrow",
         { opacity: 0, y: 16 },
@@ -52,12 +150,56 @@ export default function ContactForm() {
           { opacity: 1, x: 0, scale: 1, duration: 0.85, ease: "power3.out" },
           "-=0.9",
         );
-
       ScrollTrigger.refresh();
     }, sectionRef);
-
     return () => ctx.revert();
   }, [smootherReady]);
+
+  // Helper for field border/underline styles
+  const fieldClass = (err?: string) =>
+    `group relative border-b pt-3.5 pb-2.5 focus-within:[&_.underline-bar]:scale-x-100 ${err ? "border-red-100" : "border-[#e0dbd4]"}`;
+  const barClass = (err?: string) =>
+    `underline-bar absolute -bottom-px left-0 right-0 h-px scale-x-0 origin-left transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${err ? "bg-red-500" : "bg-[#333]"}`;
+  const inputClass = (err?: string) =>
+    `w-full bg-transparent border-none outline-none font-light text-[13.5px] text-[#333] ${err ? "placeholder:text-red-300" : "placeholder:text-[#ccc]"}`;
+
+  const textFields = [
+    {
+      label: "First name",
+      name: "firstName" as const,
+      type: "text",
+      placeholder: "John",
+      half: true,
+    },
+    {
+      label: "Last name",
+      name: "lastName" as const,
+      type: "text",
+      placeholder: "Doe",
+      half: true,
+    },
+    {
+      label: "Email",
+      name: "email" as const,
+      type: "email",
+      placeholder: "you@example.com",
+      half: false,
+    },
+    {
+      label: "Phone",
+      name: "phone" as const,
+      type: "tel",
+      placeholder: "+971 5X XXX XXXX",
+      half: true,
+    },
+    {
+      label: "Country",
+      name: "country" as const,
+      type: "text",
+      placeholder: "UAE",
+      half: true,
+    },
+  ];
 
   return (
     <div ref={sectionRef} className="w-full mt-18">
@@ -84,18 +226,12 @@ export default function ContactForm() {
 
           <div className="cf-info opacity-0 grid grid-cols-2 gap-y-7 gap-x-5">
             {[
-              {
-                label: "Call / Whatsapp US ",
-                lines: ["+971 508287918"],
-              },
+              { label: "Call / Whatsapp US", lines: ["+971 508287918"] },
               {
                 label: "Our Location",
                 lines: ["Churchill Tower Business Bay, Dubai- UAE"],
               },
-              {
-                label: "Email",
-                lines: ["info@morzglobal.com"],
-              },
+              { label: "Email", lines: ["info@morzglobal.com"] },
             ].map(({ label, lines }) => (
               <div key={label}>
                 <p className="text-[10.5px] font-medium tracking-[0.1em] uppercase text-primary mb-2">
@@ -156,7 +292,11 @@ export default function ContactForm() {
         </div>
 
         {/* RIGHT — form panel */}
-        <div className="cf-form-panel opacity-0 bg-white shadow border border-gray-400/20 px-5 mt-10 lg:mt-0 lg:px-12 py-14 rounded-2xl flex flex-col justify-center">
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          className="cf-form-panel opacity-0 bg-white shadow border border-gray-400/20 px-5 mt-10 lg:mt-0 lg:px-12 py-14 rounded-2xl flex flex-col justify-center"
+        >
           <h2
             className="text-2xl font-normal text-[#111] mb-1.5"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
@@ -168,68 +308,162 @@ export default function ContactForm() {
           </p>
 
           <div className="flex flex-col">
-            {[
-              { label: "Full name", type: "text", placeholder: "John Doe" },
-              { label: "Email", type: "email", placeholder: "you@example.com" },
-              {
-                label: "Subject",
-                type: "text",
-                placeholder: "How can we help?",
-              },
-            ].map(({ label, type, placeholder }) => (
-              <div
-                key={label}
-                className="group relative border-b border-[#e0dbd4] pt-3.5 pb-2.5 focus-within:[&_.underline-bar]:scale-x-100"
-              >
-                <label className="block text-sm font-[400] tracking-[0.1em] text-gray-900/60 mb-1.5">
-                  {label}
-                </label>
-                <input
-                  type={type}
-                  placeholder={placeholder}
-                  className="w-full bg-transparent border-none outline-none font-light text-[13.5px] text-[#333] placeholder:text-[#ccc]"
-                />
-                <div className="underline-bar absolute bottom-[-1px] left-0 right-0 h-px bg-[#333] scale-x-0 origin-left transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]" />
-              </div>
-            ))}
+            {/* First / Last name row */}
+            <div className="grid grid-cols-2 gap-x-4">
+              {textFields
+                .filter((f) => f.half)
+                .slice(0, 2)
+                .map(({ label, name, type, placeholder }) => (
+                  <div key={name} className={fieldClass(errors[name])}>
+                    <label className="block text-sm font-[400] tracking-[0.1em] text-gray-900/60 mb-1.5">
+                      {label}
+                    </label>
+                    <input
+                      type={type}
+                      name={name}
+                      value={formData[name]}
+                      onChange={handleChange}
+                      placeholder={placeholder}
+                      className={inputClass(errors[name])}
+                    />
 
-            <div className="group relative border-b border-[#e0dbd4] pt-3.5 pb-2.5 focus-within:[&_.underline-bar]:scale-x-100">
+                    <div className={barClass(errors[name])} />
+                  </div>
+                ))}
+            </div>
+
+            {/* Email */}
+            <div className={fieldClass(errors.email)}>
+              <label className="block text-sm font-[400] tracking-[0.1em] text-gray-900/60 mb-1.5">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                className={inputClass(errors.email)}
+              />
+
+              <div className={barClass(errors.email)} />
+            </div>
+
+            {/* Phone / Country row */}
+            <div className="grid grid-cols-2 gap-x-4">
+              {[
+                {
+                  label: "Phone",
+                  name: "phone" as const,
+                  type: "tel",
+                  placeholder: "+971 5X XXX XXXX",
+                },
+                {
+                  label: "Country",
+                  name: "country" as const,
+                  type: "text",
+                  placeholder: "UAE",
+                },
+              ].map(({ label, name, type, placeholder }) => (
+                <div key={name} className={fieldClass(errors[name])}>
+                  <label className="block text-sm font-[400] tracking-[0.1em] text-gray-900/60 mb-1.5">
+                    {label}
+                  </label>
+                  <input
+                    type={type}
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    placeholder={placeholder}
+                    className={inputClass(errors[name])}
+                  />
+
+                  <div className={barClass(errors[name])} />
+                </div>
+              ))}
+            </div>
+
+            {/* Inquiry type */}
+            <div className="pt-3.5 pb-2.5  border-[#e0dbd4]">
+              <label className="block text-sm font-[400] tracking-[0.1em] text-gray-900/60 mb-2.5">
+                Type of Inquiry
+              </label>
+              <div className="flex gap-2 flex-wrap">
+                {INQUIRY_TYPES.map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => handleInquiry(type)}
+                    className={`px-3 py-1 rounded-full text-xs border transition-all ${errors.inquiryType ? "bg-red-100! text-red-500!" : ""} ${
+                      formData.inquiryType === type
+                        ? "bg-primary text-white border-primary"
+                        : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
+                    }`}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Message */}
+            <div className={fieldClass(errors.message)}>
               <label className="block text-sm font-[400] tracking-[0.1em] text-gray-900/60 mb-1.5">
                 Message
               </label>
               <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
                 placeholder="Tell us more about your enquiry..."
                 rows={3}
-                className="w-full bg-transparent border-none outline-none font-light text-[13.5px] text-[#333] placeholder:text-[#ccc] resize-none leading-relaxed"
+                className={`${inputClass(errors.message)} resize-none leading-relaxed`}
               />
-              <div className="underline-bar absolute bottom-[-1px] left-0 right-0 h-px bg-[#333] scale-x-0 origin-left transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]" />
+              <div className={barClass(errors.message)} />
             </div>
           </div>
 
+          {status === "success" && (
+            <p className="mt-4 text-[12px] text-green-600">
+              ✓ Message sent! We'll reply within 24h.
+            </p>
+          )}
+          {status === "error" && (
+            <p className="mt-4 text-[12px] text-red-500">
+              Something went wrong. Please try again.
+            </p>
+          )}
+
           <div className="flex items-center justify-between mt-7">
-            <button className="inline-flex items-center gap-2.5 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-sm text-xs font-medium uppercase transition-all duration-200 hover:scale-[1.03] group">
-              Send a message
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 16 16"
-                fill="none"
-                className="transition-transform duration-200 group-hover:translate-x-1"
-              >
-                <path
-                  d="M3 8h10M9 4l4 4-4 4"
-                  stroke="#fff"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              className="inline-flex items-center gap-2.5 bg-primary hover:bg-primary/90 disabled:opacity-60 text-white px-6 py-3 rounded-sm text-xs font-medium uppercase transition-all duration-200 hover:scale-[1.03] group"
+            >
+              {status === "loading" ? "Sending…" : "Send a message"}
+              {status !== "loading" && (
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                >
+                  <path
+                    d="M3 8h10M9 4l4 4-4 4"
+                    stroke="#fff"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              )}
             </button>
             <span className="text-[11px] text-gray-500 font-light tracking-[0.04em]">
               We reply within 24h
             </span>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

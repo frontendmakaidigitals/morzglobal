@@ -1,83 +1,111 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import Link from "next/link";
 import type { CarouselApi } from "@/components/ui/carousel";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
-const blogs = [
-  {
-    title: "Improving Flow Efficiency in Industrial Systems",
-    desc: "Small optimizations in valve systems can significantly improve performance and reduce downtime.",
-    date: "February 22, 2024",
-    author: "Ethan Brooks",
-    image:
-      "https://images.unsplash.com/photo-1661864667506-c8d0dbd59004?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Choosing the Right Safety Valve for Your Operations",
-    desc: "Understanding safety systems is key to maintaining compliance and operational continuity.",
-    date: "March 27, 2024",
-    author: "Lily Thompson",
-    image:
-      "https://images.unsplash.com/photo-1711571603473-6119c6ede1ee?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "High-Pressure Systems: Best Practices",
-    desc: "Ensure reliability and safety in high-pressure environments with the right equipment.",
-    date: "April 30, 2024",
-    author: "Oliver Davis",
-    image:
-      "https://images.unsplash.com/photo-1674471361523-195aa08e69b5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Predictive Maintenance in Industrial Systems",
-    desc: "Leveraging data and smart sensors to anticipate failures, reduce downtime, and optimize asset performance.",
-    date: "May 18, 2024",
-    author: "Sophia Carter",
-    image:
-      "https://images.unsplash.com/photo-1597036621246-6f17bd303f76?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-];
+import { Editor } from "@/components/blocks/editor-00/editor";
+interface Blog {
+  id: string;
+  title: string;
+  content: string;
+  image: string;
+  author: string;
+  category: string;
+  createdAt: string;
+  slugTitle: string;
+}
 
 export default function BlogSection() {
   const [api, setApi] = useState<CarouselApi | null>(null);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await fetch("/api/blogs");
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch blogs");
+        }
+
+        const data = await res.json();
+
+        setBlogs(data.blogs || []);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   return (
-    <section className="bg-secondary/10 py-20 ">
+    <section className="bg-secondary/10 py-20">
       <div className="container">
         {/* Header */}
         <p className="text-sm text-gray-500 mb-2">Blogs</p>
+
         <h2 className="text-4xl md:text-6xl max-w-2xl font-serif text-gray-900 mb-4">
           Industrial insights for smarter operations
         </h2>
+
         <p className="text-gray-600 mb-12 max-w-xl">
           Stay updated with trends, technologies, and best practices in
           industrial machinery and engineering.
         </p>
 
+        {/* Loading */}
+        {loading && <p className="text-gray-500">Loading blogs...</p>}
+
         {/* Carousel */}
-        <Carousel setApi={setApi} opts={{ align: "start" }}>
-          <CarouselContent className="-ml-6">
-            {blogs.map((blog, i) => (
-              <CarouselItem
-                key={i}
-                className="pl-6 basis-full basis-2/3 md:basis-1/2 lg:basis-1/4"
-              >
-                <BlogCard {...blog} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+        {!loading && blogs.length > 0 && (
+          <Carousel setApi={setApi} opts={{ align: "start" }}>
+            <CarouselContent className="-ml-6">
+              {blogs.map((blog) => (
+                <CarouselItem
+                  key={blog.id}
+                  className="pl-6 basis-full md:basis-1/2 lg:basis-1/4"
+                >
+                  <BlogCard
+                    title={blog.title}
+                    content={blog.content}
+                    date={new Date(blog.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                    slugTitle={blog.slugTitle}
+                    author={blog.author}
+                    image={`/api/uploads/${blog.image}`}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        )}
+
+        {/* Empty */}
+        {!loading && blogs.length === 0 && (
+          <p className="text-gray-500">No blogs found.</p>
+        )}
 
         {/* CTA */}
         <div className="mt-12 flex items-center justify-between">
-          <button className="border rounded-sm border-gray-900 px-6 py-3 text-sm flex items-center gap-3 hover:bg-gray-900 hover:text-white transition">
-            View more articles →
-          </button>
+          <Link href={"/blogs"}>
+            <button className="border cursor-pointer rounded-sm border-gray-900 px-6 py-3 text-sm flex items-center gap-3 hover:bg-gray-900 hover:text-white transition">
+              View more articles →
+            </button>
+          </Link>
 
           <div className="flex items-center gap-3">
             <button
@@ -86,6 +114,7 @@ export default function BlogSection() {
             >
               <ArrowLeft />
             </button>
+
             <button
               onClick={() => api?.scrollNext()}
               className="border border-primary rounded-sm hover:bg-primary text-primary hover:text-white p-3"
@@ -101,19 +130,21 @@ export default function BlogSection() {
 
 function BlogCard({
   title,
-  desc,
+  content,
   date,
   author,
   image,
+  slugTitle,
 }: {
   title: string;
-  desc: string;
+  content: string;
   date: string;
   author: string;
   image: string;
+  slugTitle: string;
 }) {
   return (
-    <div className="group">
+    <Link href={`/blogs/${slugTitle}`} className="group">
       {/* Image */}
       <div className="relative w-full h-[260px] overflow-hidden">
         <Image
@@ -135,12 +166,20 @@ function BlogCard({
       </h3>
 
       {/* Description */}
-      <p className="text-gray-600 text-sm mt-2 leading-relaxed">{desc}</p>
+
+      <Editor
+        editorSerializedState={
+          typeof content === "string" ? JSON.parse(content) : content
+        }
+        readOnly
+        clampLines={2}
+        blogPage={false}
+      />
 
       {/* Read more */}
-      <button className="mt-4 text-sm flex items-center gap-2 text-gray-900 group-hover:gap-3 transition-all">
+      <button className="mt-4 cursor-pointer text-sm flex items-center gap-2 text-gray-900 group-hover:gap-3 transition-all">
         Read more →
       </button>
-    </div>
+    </Link>
   );
 }

@@ -9,57 +9,12 @@ import Image from "next/image";
 import Link from "next/link";
 gsap.registerPlugin(ScrollTrigger);
 
-const footerColumns = [
-  {
-    title: "Offshore",
-    links: [
-      "Detail Engineering (EPC Stage)",
-      "Brownfield Modifications",
-      "Structural Studies",
-      "Topside and Jacket Design",
-      "Lifting and load out plan",
-      "Sea Fastening Designs",
-      "Process & Process Safety Engineering",
-      "Mechanical (Static & Rotary) Engineering",
-      "Piping Engineering",
-      "Electrical Engineering",
-      "Instrumentation Engineering",
-      "Civil/Structural Engineering",
-      "Project Management & Project Planning",
-      "Cost Estimation & Budgeting",
-      "3D Modelling",
-      "As-built Drawings",
-    ],
-    link: "/services#offshore",
-  },
-  {
-    title: "Onshore",
-    links: [
-      "Detail Engineering (EPC Stage)",
-      "Solar Power Engineering",
-      "Process & Safety Engineering",
-      "Mechanical (Static & Rotary) Engineering",
-      "Piping and Pipeline Engineering",
-      "Electrical Engineering",
-      "Instrumentation Engineering",
-      "Civil/Structural Engineering",
-      "Substation Design",
-      "Project Management & Project Planning",
-      "Cost Estimation & Budgeting",
-      "3D Modelling",
-      "As-built Drawings",
-    ],
-    link: "/services#onshore",
-  },
-  {
-    title: "Bim",
-    links: [
-      "BIM Modelling",
-      "Scan to Drawing Conversion",
-      "Laser Scan Services",
-    ],
-    link: "/services#bim",
-  },
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Blogs", href: "/blogs" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const socialIcons = [
@@ -136,100 +91,83 @@ export default function Footer() {
 
   return (
     <div ref={wrapperRef} className="flex flex-col bg-[#333] mt-60 font-sans">
-      {/* CTA */}
       <CTACard />
       <div className="flex-1" />
 
-      {/* Footer */}
-      <footer className="anim-footer-body px-10 pb-10 pt-52 container">
-        <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-10">
-          {/* Left — logo + description */}
-          <div className="anim-logo opacity-0 flex flex-col gap-3">
+      {/* Footer body */}
+      <footer className="anim-footer-body px-10 pb-24 pt-52 container">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_auto] gap-20 items-start">
+          {/* Col 1 — Logo + description */}
+          <div className="anim-logo opacity-0 flex flex-col gap-4 max-w-xs">
             <Logo light />
-            <p className="text-xs text-gray-50/70 max-w-2xs leading-relaxed font-light">
+            <p className=" text-gray-50/70 leading-relaxed font-light">
               Delivering advanced industrial engineering solutions with a focus
               on performance, safety, and reliability.
             </p>
           </div>
 
-          {/* Right — columns + contact */}
-          <div className="mt-10 lg:mt-0">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-              {/* Link columns */}
-              {footerColumns.map((col) => (
-                <div key={col.title} className="anim-col opacity-0">
-                  <p className="text-xs font-semibold text-gray-100 mb-4 tracking-wide uppercase">
-                    {col.title}
-                  </p>
-                  <ul className="space-y-2.5">
-                    {col.links.map((link) => {
-                      const isObject = typeof link === "object";
-                      const label = isObject ? (link as any).label : link;
-                      const href = isObject ? (link as any).href : "#";
-                      return (
-                        <li key={label}>
-                          <Link
-                            href={col.link}
-                            className="group text-sm text-gray-200 hover:text-white transition flex items-center gap-1 cursor-pointer w-fit"
-                          >
-                            <span className="relative">
-                              {label}
-                              {/* underline animation */}
-                              <span className="absolute left-0 -bottom-px h-px w-0 bg-white group-hover:w-full transition-all duration-300 ease-out" />
-                            </span>
-                            {isObject && (
-                              <span className="text-xs opacity-70">↗</span>
-                            )}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
+          {/* Col 2 — Nav links */}
+          <div>
+            <p className="text-xs font-semibold text-gray-100 mb-3 tracking-wide uppercase">
+              Useful Links
+            </p>
+            <div className="anim-col opacity-0 flex flex-col gap-3">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="group text-sm text-gray-300 hover:text-white transition w-fit"
+                >
+                  <span className="relative">
+                    {link.label}
+                    <span className="absolute left-0 -bottom-px h-px w-0 bg-white group-hover:w-full transition-all duration-300 ease-out" />
+                  </span>
+                </Link>
               ))}
+            </div>
+          </div>
 
-              {/* Contact — 4th column in the same grid */}
-              <div className="anim-col opacity-0">
-                <p className="text-xs font-semibold text-gray-100 mb-4 tracking-wide uppercase">
-                  Get in Touch
-                </p>
-                <div className="flex flex-col gap-4">
-                  <a
-                    href="mailto:mohammed@morzglobal.com"
-                    className="flex items-center gap-3 text-sm text-gray-200 hover:text-white transition group"
-                  >
-                    <span className="w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/20 flex items-center justify-center shrink-0 transition">
-                      <Mail size={14} />
-                    </span>
-                    info@morzglobal.com
-                  </a>
+          {/* Col 3 — Contact */}
+          <div className="anim-col opacity-0 flex flex-col gap-1">
+            <p className="text-xs font-semibold text-gray-100 mb-3 tracking-wide uppercase">
+              Get in Touch
+            </p>
+            <div className="flex flex-col gap-4">
+              <a
+                href="mailto:info@morzglobal.com"
+                className="flex items-center gap-3 text-sm text-gray-200 hover:text-white transition group"
+              >
+                <span className="w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/20 flex items-center justify-center shrink-0 transition">
+                  <Mail size={14} />
+                </span>
+                info@morzglobal.com
+              </a>
 
-                  <div className="flex items-center gap-3 text-sm text-gray-200">
-                    <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                      <MapPin size={14} />
-                    </span>
-                    Churchill Tower Business Bay, Dubai- UAE
-                  </div>
-
-                  <a
-                    href="tel:+971503785060"
-                    className="flex items-center gap-3 text-sm text-gray-200 hover:text-white transition group"
-                  >
-                    <span className="w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/20 flex items-center justify-center shrink-0 transition">
-                      <Phone size={14} />
-                    </span>
-                    +971 50 739 0680
-                  </a>
-                </div>
+              <div className="flex items-center gap-3 text-sm text-gray-200">
+                <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                  <MapPin size={14} />
+                </span>
+                Churchill Tower Business Bay, Dubai — UAE
               </div>
+
+              <a
+                href="tel:+971508287918"
+                className="flex items-center gap-3 text-sm text-gray-200 hover:text-white transition group"
+              >
+                <span className="w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/20 flex items-center justify-center shrink-0 transition">
+                  <Phone size={14} />
+                </span>
+                +971 508287918
+
+              </a>
             </div>
           </div>
         </div>
       </footer>
 
-      {/* Bottom bar */}
+      {/* Bottom strip */}
       <div className="anim-bottom bg-primary">
-        <div className="container border-gray-50 py-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="container py-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <span className="text-xs text-gray-50">
             © MORZ Global 2026. All rights reserved
           </span>
@@ -240,8 +178,8 @@ export default function Footer() {
                 src={`/social-icon/${icon.icon}`}
                 alt={icon.name}
                 width={24}
-                className="invert brightness-0"
                 height={24}
+                className="invert brightness-0"
               />
             ))}
           </div>

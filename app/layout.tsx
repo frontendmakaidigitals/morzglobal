@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Footer from "@/footer/footer";
-import Header from "@/header/header";
-import SmoothScrollProvider from "./smooth-scrollprovder";
+
 import BackToTop from "@/pages/components/to-top";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -47,12 +45,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <BackToTop />
-        <Header />
-        <SmoothScrollProvider>
-          {children}
-
-          <Footer />
-        </SmoothScrollProvider>
+        {children}
       </body>
     </html>
   );

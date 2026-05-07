@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import Logo from "@/pages/components/Logo";
 import Menu from "./menu";
 import MobileMenu from "./mobile-menu";
-import Link from "next/link";
 import Image from "next/image";
 export const menuItems = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
-  { label: "Blogs", href: "/#" },
+  { label: "Blogs", href: "/blogs" },
   { label: "Contact", href: "/contact" },
 ];
 
