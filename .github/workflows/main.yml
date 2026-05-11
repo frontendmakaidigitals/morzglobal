@@ -24,6 +24,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Create env file
+        run: |
+          echo "RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}" >> .env
+
       - name: Cache Next.js build
         uses: actions/cache@v3
         with:
