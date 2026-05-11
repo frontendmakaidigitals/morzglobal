@@ -1,12 +1,15 @@
 name: Deploy Next.js App - Production
+
 on:
   push:
     branches:
       - master
+
 jobs:
   build-and-deploy:
     name: Build and Deploy to Production
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -43,18 +46,21 @@ jobs:
         run: |
           rsync -avz --delete --exclude '.git' --exclude 'node_modules' \
             -e "ssh -p 9389 -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/qhtech/
+            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/morz/
 
       - name: Deploy and run with PM2
         run: |
           ssh -i ~/.ssh/id_rsa -p 9389 -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-            cd ~/qhtech &&
+            cd ~/morz &&
+            
+            # Create environment file
+            echo 'RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}' > .env
             
             # Stop and delete existing PM2 process if it exists
-            pm2 delete qhtech || true
+            pm2 delete morz || true
             
-            # Check if port 3003 is in use and kill the process
-            PORT=3003
+            # Check if port 3015 is in use and kill the process
+            PORT=3015
             PID=\$(lsof -t -i:\$PORT) || true
             [ ! -z \"\$PID\" ] && kill -9 \$PID || true
             
@@ -63,7 +69,7 @@ jobs:
             npm i sharp &&
             
             # Start the application with PM2
-            PORT=3003 pm2 start npm --name qhtech -- start
+            PORT=3015 pm2 start npm --name morz -- start
             
             # Enable timestamp logging and save the PM2 process
             pm2 save
@@ -71,5 +77,5 @@ jobs:
             
             # Verify app is running
             sleep 5
-            pm2 list | grep -q 'qhtech.*online' && echo 'App started successfully' || (pm2 logs qhtech --lines 50 && exit 1)
+            pm2 list | grep -q 'morz.*online' && echo 'App started successfully' || (pm2 logs morz --lines 50 && exit 1)
           "
