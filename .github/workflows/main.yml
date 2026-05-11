@@ -3,9 +3,9 @@ name: Deploy Next.js App - Production
 on:
   push:
     branches:
-      - master
+      - main
 
-      
+
 jobs:
   build-and-deploy:
     name: Build and Deploy to Production
