@@ -41,39 +41,59 @@ jobs:
         run: npm run build
 
       # =========================
-      # DEBUG NETWORK
-      # =========================
-      - name: Debug connectivity
-        run: |
-          echo "Testing port 9389..."
-          nc -zv 65.20.74.159 9389
-          curl -s https://api.ipify.org
-
-      # =========================
       # SETUP SSH
       # =========================
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
 
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-
+          # Write private key — preserve exact formatting
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          ssh-keyscan -p 9389 65.20.74.159 >> ~/.ssh/known_hosts
+          # Add server to known_hosts to avoid host verification prompt
+          ssh-keyscan -p 9389 -H 65.20.74.159 >> ~/.ssh/known_hosts 2>/dev/null
+
+          # Write SSH config for convenience
+          cat > ~/.ssh/config << EOF
+          Host deploy-server
+            HostName 65.20.74.159
+            User ${{ secrets.SSH_USER }}
+            Port 9389
+            IdentityFile ~/.ssh/id_rsa
+            StrictHostKeyChecking no
+            ConnectTimeout 30
+            ServerAliveInterval 60
+            ServerAliveCountMax 10
+          EOF
+
+          chmod 600 ~/.ssh/config
 
       # =========================
-      # DEBUG SSH
+      # DEBUG NETWORK
       # =========================
-      - name: Debug SSH connection
+      - name: Debug connectivity
         run: |
-          ssh -vvv \
-            -i ~/.ssh/id_rsa \
-            -p 9389 \
-            -o ConnectTimeout=30 \
-            -o StrictHostKeyChecking=no \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-            "echo 'SSH connection successful'"
+          echo "=== Runner IP ==="
+          curl -s https://api.ipify.org
+
+          echo ""
+          echo "=== Port check ==="
+          nc -zv -w 15 65.20.74.159 9389
+
+          echo ""
+          echo "=== SSH banner ==="
+          timeout 10 bash -c "echo '' | nc 65.20.74.159 9389" || true
+
+          echo ""
+          echo "=== Test SSH connection ==="
+          ssh -i ~/.ssh/id_rsa \
+              -p 9389 \
+              -o ConnectTimeout=30 \
+              -o StrictHostKeyChecking=no \
+              -o BatchMode=yes \
+              ${{ secrets.SSH_USER }}@65.20.74.159 \
+              "echo 'SSH handshake OK'" || echo "SSH test failed"
 
       # =========================
       # RSYNC DEPLOY
@@ -85,9 +105,10 @@ jobs:
             --exclude '.git' \
             --exclude 'node_modules' \
             --exclude '.next/cache' \
+            --exclude '.env' \
             -e "ssh -i ~/.ssh/id_rsa -p 9389 -o ConnectTimeout=30 -o StrictHostKeyChecking=no" \
             ./ \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/morz/
+            ${{ secrets.SSH_USER }}@65.20.74.159:~/morz/
 
       # =========================
       # REMOTE DEPLOY
@@ -99,53 +120,47 @@ jobs:
             -p 9389 \
             -o ConnectTimeout=30 \
             -o StrictHostKeyChecking=no \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            -o BatchMode=yes \
+            ${{ secrets.SSH_USER }}@65.20.74.159 << 'ENDSSH'
 
             set -e
 
             cd ~/morz
 
-            echo "Creating env..."
-
+            echo "=== Creating .env ==="
             cat > .env << EOL
-            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
-            EOL
+          RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+          EOL
 
-            echo "Stopping existing PM2 app..."
-
+            echo "=== Stopping existing PM2 process ==="
             pm2 delete morz || true
 
-            echo "Killing port 3015 if occupied..."
-
+            echo "=== Freeing port 3015 if occupied ==="
             PORT=3015
-            PID=$(lsof -t -i:$PORT || true)
-
-            if [ ! -z "$PID" ]; then
+            PID=$(lsof -t -i:$PORT 2>/dev/null || true)
+            if [ -n "$PID" ]; then
               kill -9 $PID || true
+              echo "Killed PID $PID on port $PORT"
             fi
 
-            echo "Installing dependencies..."
-
+            echo "=== Installing dependencies ==="
             npm ci --omit=dev
 
-            echo "Installing sharp..."
-
+            echo "=== Installing sharp ==="
             npm install sharp
 
-            echo "Starting app..."
-
+            echo "=== Starting app with PM2 ==="
             PORT=3015 pm2 start npm --name morz -- start
 
             pm2 save
 
-            echo "Waiting for app startup..."
-
+            echo "=== Waiting for startup ==="
             sleep 10
 
             pm2 status
 
             pm2 logs morz --lines 20 --nostream || true
 
-            echo "Deployment completed."
+            echo "=== Deployment complete ==="
 
-          EOF
+          ENDSSH
