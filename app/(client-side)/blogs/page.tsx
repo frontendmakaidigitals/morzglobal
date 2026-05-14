@@ -258,7 +258,7 @@ const BlogCard = ({ blogs }: { blogs: Blog[] }) => {
             : blog.content
         }
         readOnly
-        clampLines={2}
+        clampLines={3}
         blogPage={false}
       />
 

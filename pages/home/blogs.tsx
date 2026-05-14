@@ -172,7 +172,7 @@ function BlogCard({
           typeof content === "string" ? JSON.parse(content) : content
         }
         readOnly
-        clampLines={2}
+        clampLines={3}
         blogPage={false}
       />
 

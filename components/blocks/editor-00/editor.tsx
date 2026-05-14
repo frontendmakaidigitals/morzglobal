@@ -172,6 +172,12 @@ export function Plugins({
       setFloatingAnchorElem(_floatingAnchorElem);
     }
   };
+  const clampClass = {
+    1: "line-clamp-1",
+    2: "line-clamp-2",
+    3: "line-clamp-3",
+    4: "line-clamp-4",
+  }[clampLines];
   return (
     <div className="relative">
       {/* Toolbar only visible in editing mode */}
@@ -196,7 +202,7 @@ export function Plugins({
               {["bold", "italic", "underline", "strikethrough"].map(
                 (format) => (
                   <FontFormatToolbarPlugin key={format} format={format} />
-                )
+                ),
               )}
               <LinkToolbarPlugin setIsLinkEditMode={setIsLinkEditMode} />
               <BlockInsertPlugin>
@@ -210,7 +216,7 @@ export function Plugins({
       <div className="relative">
         {readOnly && blogPage === false ? (
           // Plain text preview with clamp
-          <div className={`relative line-clamp-${clampLines} text-sm ${text}`}>
+          <div className={`relative ${clampClass} text-sm ${text}`}>
             {renderPlainTextFromEditorState(serialized)}
           </div>
         ) : (
@@ -262,7 +268,7 @@ export function Plugins({
 }
 // Render plain text for preview
 function renderPlainTextFromEditorState(
-  serialized: SerializedEditorState | undefined
+  serialized: SerializedEditorState | undefined,
 ) {
   if (!serialized) return "";
   try {
@@ -271,7 +277,7 @@ function renderPlainTextFromEditorState(
     return root.children
       .map(
         (node: any) =>
-          node.children?.map((child: any) => child.text).join(" ") ?? ""
+          node.children?.map((child: any) => child.text).join(" ") ?? "",
       )
       .join(" ");
   } catch (e) {
