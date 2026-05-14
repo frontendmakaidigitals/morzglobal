@@ -47,6 +47,7 @@ jobs:
         run: |
           echo "Testing port 9389..."
           nc -zv 65.20.74.159 9389
+          curl -s https://api.ipify.org
 
       # =========================
       # SETUP SSH
