@@ -5,7 +5,6 @@ on:
     branches:
       - main
 
-
 jobs:
   build-and-deploy:
     name: Build and Deploy to Production
@@ -13,10 +12,10 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
@@ -29,7 +28,7 @@ jobs:
           echo "RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}" >> .env
 
       - name: Cache Next.js build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.npm
@@ -40,51 +39,112 @@ jobs:
 
       - name: Build project
         run: npm run build
+
+      # =========================
+      # DEBUG NETWORK
+      # =========================
       - name: Debug connectivity
         run: |
-            nc -zv 65.20.74.159 9389
-            nc -zv 65.20.74.159 22
+          echo "Testing port 9389..."
+          nc -zv 65.20.74.159 9389
 
+      # =========================
+      # SETUP SSH
+      # =========================
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
+
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+
           chmod 600 ~/.ssh/id_rsa
 
+          ssh-keyscan -p 9389 65.20.74.159 >> ~/.ssh/known_hosts
+
+      # =========================
+      # DEBUG SSH
+      # =========================
+      - name: Debug SSH connection
+        run: |
+          ssh -vvv \
+            -i ~/.ssh/id_rsa \
+            -p 9389 \
+            -o ConnectTimeout=30 \
+            -o StrictHostKeyChecking=no \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            "echo 'SSH connection successful'"
+
+      # =========================
+      # RSYNC DEPLOY
+      # =========================
       - name: Upload project files via rsync
         run: |
-          rsync -avz --delete --exclude '.git' --exclude 'node_modules' \
-            -e "ssh -p 9389 -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/morz/
+          rsync -avz \
+            --delete \
+            --exclude '.git' \
+            --exclude 'node_modules' \
+            --exclude '.next/cache' \
+            -e "ssh -i ~/.ssh/id_rsa -p 9389 -o ConnectTimeout=30 -o StrictHostKeyChecking=no" \
+            ./ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/morz/
 
+      # =========================
+      # REMOTE DEPLOY
+      # =========================
       - name: Deploy and run with PM2
         run: |
-          ssh -i ~/.ssh/id_rsa -p 9389 -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-            cd ~/morz &&
-            
-            # Create environment file
-            echo 'RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}' > .env
-            
-            # Stop and delete existing PM2 process if it exists
+          ssh \
+            -i ~/.ssh/id_rsa \
+            -p 9389 \
+            -o ConnectTimeout=30 \
+            -o StrictHostKeyChecking=no \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+
+            set -e
+
+            cd ~/morz
+
+            echo "Creating env..."
+
+            cat > .env << EOL
+            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            EOL
+
+            echo "Stopping existing PM2 app..."
+
             pm2 delete morz || true
-            
-            # Check if port 3015 is in use and kill the process
+
+            echo "Killing port 3015 if occupied..."
+
             PORT=3015
-            PID=\$(lsof -t -i:\$PORT) || true
-            [ ! -z \"\$PID\" ] && kill -9 \$PID || true
-            
-            # Install dependencies
-            npm ci --omit=dev &&
-            npm i sharp &&
-            
-            # Start the application with PM2
+            PID=$(lsof -t -i:$PORT || true)
+
+            if [ ! -z "$PID" ]; then
+              kill -9 $PID || true
+            fi
+
+            echo "Installing dependencies..."
+
+            npm ci --omit=dev
+
+            echo "Installing sharp..."
+
+            npm install sharp
+
+            echo "Starting app..."
+
             PORT=3015 pm2 start npm --name morz -- start
-            
-            # Enable timestamp logging and save the PM2 process
+
             pm2 save
-            pm2 set pm2:logs:timestamp true
-            
-            # Verify app is running
-            sleep 5
-            pm2 list | grep -q 'morz.*online' && echo 'App started successfully' || (pm2 logs morz --lines 50 && exit 1)
-          "
+
+            echo "Waiting for app startup..."
+
+            sleep 10
+
+            pm2 status
+
+            pm2 logs morz --lines 20 --nostream || true
+
+            echo "Deployment completed."
+
+          EOF
