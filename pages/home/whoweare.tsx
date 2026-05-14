@@ -137,7 +137,7 @@ export default function AboutSection() {
           <p className="text-sm leading-[1.85] text-[#7A7570] font-light mb-6">
             Our team of qualified engineers and project specialists deliver
             focused, reliable solutions across onshore and offshore oil & gas,
-            power generation, solar energy, and civil works — supported by
+            power generation, solar energy, Infrastructure and building design — supported by
             advanced capabilities in 3D modelling, drafting, and technical
             documentation. We are committed to bringing accuracy, efficiency,
             and long-term value to every project we undertake.

@@ -16,7 +16,7 @@ const services = [
       "Piping and Pipeline Engineering",
       "Electrical Engineering",
       "Instrumentation Engineering",
-      "Civil/Structural Engineering",
+      "Structural Engineering",
       "Substation Design",
       "Project Management & Project Planning",
       "Cost Estimation & Budgeting",
@@ -41,7 +41,7 @@ const services = [
       "Piping Engineering",
       "Electrical Engineering",
       "Instrumentation Engineering",
-      "Civil/Structural Engineering",
+      "Structural Engineering",
       "Project Management & Project Planning",
       "Cost Estimation & Budgeting",
       "3D Modelling",
@@ -92,10 +92,11 @@ export default function ServicesOverview() {
             <p className="text-neutral-600">
               Our team of qualified engineers and project specialists deliver
               focused, reliable solutions across onshore and offshore oil & gas,
-              power generation, solar energy, and civil works — supported by
-              advanced capabilities in 3D modelling, drafting, and technical
-              documentation. We are committed to bringing accuracy, efficiency,
-              and long-term value to every project we undertake.
+              power generation, solar energy, Infrastructure and building design
+              — supported by advanced capabilities in 3D modelling, drafting,
+              and technical documentation. We are committed to bringing
+              accuracy, efficiency, and long-term value to every project we
+              undertake.
             </p>
           </div>
         </div>
