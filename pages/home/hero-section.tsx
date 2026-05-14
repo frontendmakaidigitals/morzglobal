@@ -78,7 +78,7 @@ export default function HeroSection() {
       >
         <img
           ref={imgRef}
-          src="/home/hero.jpeg"
+          src="/home/hero2.jpg"
           alt="Industrial machinery"
           className="w-full h-full object-cover"
           style={{ transformOrigin: "left center" }}
