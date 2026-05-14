@@ -40,6 +40,10 @@ jobs:
 
       - name: Build project
         run: npm run build
+      - name: Debug connectivity
+        run: |
+            nc -zv 65.20.74.159 9389
+            nc -zv 65.20.74.159 22
 
       - name: Set up SSH key
         run: |

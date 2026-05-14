@@ -78,7 +78,7 @@ export default function HeroSection() {
       >
         <img
           ref={imgRef}
-          src="https://framerusercontent.com/images/m0i64A4tsNGa7wuoRO5Mh926M.jpg?width=4096&height=2731"
+          src="/home/hero.jpeg"
           alt="Industrial machinery"
           className="w-full h-full object-cover"
           style={{ transformOrigin: "left center" }}
