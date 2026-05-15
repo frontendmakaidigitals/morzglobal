@@ -202,7 +202,10 @@ export default function ContactForm() {
   ];
 
   return (
-    <div ref={sectionRef} className="w-full mt-18">
+    <div
+      ref={sectionRef}
+      className="w-full overflow-hidden lg:overflow-auto mt-18"
+    >
       <div className="container grid grid-cols-1 lg:grid-cols-2 min-h-[520px]">
         {/* LEFT — info panel */}
         <div className="lg:px-[52px] flex flex-col justify-between">
@@ -295,7 +298,7 @@ export default function ContactForm() {
         <form
           onSubmit={handleSubmit}
           noValidate
-          className="cf-form-panel opacity-0 bg-white shadow border border-gray-400/20 px-5 mt-10 lg:mt-0 lg:px-12 py-14 rounded-2xl flex flex-col justify-center"
+          className="cf-form-panel  opacity-0 bg-white shadow border border-gray-400/20 px-5 mt-10 lg:mt-0 lg:px-12 py-14 rounded-2xl flex flex-col justify-center"
         >
           <h2
             className="text-2xl font-normal text-[#111] mb-1.5"

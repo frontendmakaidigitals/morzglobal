@@ -1,148 +1,398 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { ArrowRight } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
-export default function HeroSection() {
-  const revealRef = useRef<HTMLDivElement>(null); // .reveal wrapper
-  const imgRef = useRef<HTMLImageElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const eyebrowRef = useRef<HTMLParagraphElement>(null);
-  const line1Ref = useRef<HTMLSpanElement>(null);
-  const line2Ref = useRef<HTMLSpanElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
+const DURATION = 1;
+const EASE = "power4.inOut";
+const AUTO_INTERVAL = 5000;
 
-  useEffect(() => {
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+const SLIDES = [
+  {
+    num: "01 / 06",
+    title: "Onshore",
+    titleEm: "Engineering",
+    subtitle:
+      "Precision-engineered solutions for land-based oil, gas, and industrial projects — from feasibility through commissioning.",
+    image: "/home/service-overview/onshore.jpeg",
+    label: "Onshore",
+  },
+  {
+    num: "02 / 06",
+    title: "Offshore",
+    titleEm: "Engineering",
+    subtitle:
+      "Specialist engineering for subsea, platform, and marine environments — built to withstand the harshest conditions at sea.",
+    image: "/home/service-overview/offshore.jpeg",
+    label: "Offshore",
+  },
+  {
+    num: "03 / 06",
+    title: "Process &",
+    titleEm: "Safety Engineering",
+    subtitle:
+      "Rigorous hazard analysis, risk assessment, and safety management systems protecting people, assets, and the environment.",
+    image: "/home/Safety.jpg",
+    label: "Process Safety",
+  },
+  {
+    num: "04 / 06",
+    title: "Civil &",
+    titleEm: "Structural Engineering",
+    subtitle:
+      "Robust civil and structural design for industrial facilities, infrastructure, and complex multi-discipline projects worldwide.",
+    image: "/home/civil.jpg",
+    label: "Civil & Structural",
+  },
+  {
+    num: "05 / 06",
+    title: "Solar Powered",
+    titleEm: "Energy",
+    subtitle:
+      "End-to-end engineering for utility-scale and commercial solar installations — from site assessment to grid integration.",
+    image: "/home/solar.jpg",
+    label: "Solar",
+  },
+  {
+    num: "06 / 06",
+    title: "Project Management &",
+    titleEm: "Project Planning ",
+    subtitle:
+      "Disciplined delivery through rigorous planning, cost control, and cross-functional leadership on complex engineering programmes.",
+    image: "/home/Project management.jpg",
+    label: "Project Management",
+  },
+];
 
-    // 1. Reveal container slides in from left
-    tl.set(revealRef.current, { autoAlpha: 1 })
-      .from(
-        revealRef.current,
-        {
-          yPercent: 100,
-          duration: 1.2,
-          ease: "power3.out",
+type SlideRefs = {
+  wrap: HTMLDivElement | null;
+  imgWrapper: HTMLDivElement | null;
+  titleWrap: HTMLDivElement | null;
+  inner: HTMLDivElement | null;
+};
+
+export default function SliderSection() {
+  const [current, setCurrent] = useState(0);
+  const animating = useRef(false);
+  const currentRef = useRef(0);
+  const autoTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isPaused = useRef(false);
+
+  const touchStart = useRef<number | null>(null);
+  const touchEnd = useRef<number | null>(null);
+
+  const slideRefs = useRef<SlideRefs[]>(
+    SLIDES.map(() => ({
+      wrap: null,
+      imgWrapper: null,
+      titleWrap: null,
+      inner: null,
+    })),
+  );
+  const slideElRefs = useRef<(HTMLDivElement | null)[]>(SLIDES.map(() => null));
+
+  const getRef = (idx: number) => slideRefs.current[idx];
+
+  const showSlide = (
+    slideEl: HTMLDivElement | null,
+    refs: SlideRefs,
+    direction: "right" | "left",
+  ) => {
+    if (!slideEl) return;
+    slideEl.style.zIndex = "11";
+    slideEl.style.opacity = "1";
+
+    gsap.fromTo(
+      refs.wrap,
+      { x: direction === "right" ? "100%" : "-100%" },
+      { x: "0%", duration: DURATION, ease: EASE },
+    );
+    gsap.fromTo(
+      refs.titleWrap,
+      { x: direction === "right" ? "-100%" : "100%" },
+      { x: "0%", duration: DURATION, ease: EASE },
+    );
+    gsap.fromTo(
+      refs.imgWrapper,
+      { x: direction === "right" ? "-100%" : "100%", scale: 1.1 },
+      {
+        x: "0%",
+        scale: 1,
+        duration: DURATION,
+        ease: EASE,
+        onStart() {
+          if (refs.imgWrapper)
+            refs.imgWrapper.style.transformOrigin =
+              direction === "right" ? "0% 50%" : "100% 50%";
         },
-        0,
-      )
+      },
+    );
+    gsap.fromTo(
+      refs.inner,
+      { filter: "blur(30px)", opacity: 0 },
+      {
+        filter: "blur(0px)",
+        opacity: 1,
+        duration: DURATION,
+        ease: EASE,
+        delay: DURATION * 0.3, // starts halfway through the slide transition
+      },
+    );
+  };
 
-      // 2. Image counter-slides from right + scale settle (stays pinned visually)
-      .from(
-        imgRef.current,
-        {
-          yPercent: -100,
-          scale: 1.2,
-          duration: 1.2,
-          ease: "power3.out",
+  const hideSlide = (
+    slideEl: HTMLDivElement | null,
+    refs: SlideRefs,
+    direction: "right" | "left",
+  ): Promise<void> => {
+    return new Promise((resolve) => {
+      if (!slideEl) {
+        resolve();
+        return;
+      }
+
+      // Exit direction is opposite to the incoming direction
+      const exitX = direction === "right" ? "-100%" : "100%";
+
+      gsap.fromTo(
+        refs.inner,
+        { filter: "blur(0px)", opacity: 1 },
+        { filter: "blur(30px)", opacity: 0.2, duration: DURATION, ease: EASE },
+      );
+
+      // Move the slide wrapper OUT (opposite of where new slide enters from)
+      gsap.to(refs.wrap, {
+        x: exitX,
+        duration: DURATION,
+        ease: EASE,
+      });
+
+      // Also counter-move the img wrapper to create the parallax reveal
+      gsap.to(refs.imgWrapper, {
+        x: direction === "right" ? "100%" : "-100%",
+        scale: 1.1,
+        duration: DURATION,
+        ease: EASE,
+        onStart() {
+          if (refs.imgWrapper)
+            refs.imgWrapper.style.transformOrigin =
+              direction === "right" ? "100% 50%" : "0% 50%";
         },
-        "<",
-      ) // ← same start time as container
-
-      // 3. Gradient overlay fades in as reveal completes
-      .to(
-        overlayRef.current,
-        {
-          opacity: 1,
-          duration: 1.0,
-          ease: "power2.out",
+        onComplete() {
+          // Reset position so the slide is ready to re-enter from the correct side next time
+          gsap.set(refs.wrap, { x: "0%" });
+          gsap.set(refs.imgWrapper, { x: "0%", scale: 1 });
+          slideEl.style.zIndex = "9";
+          slideEl.style.opacity = "0";
+          resolve();
         },
-        0.9,
-      )
+      });
+    });
+  };
 
-      // 4. Text sequence
-      .to(eyebrowRef.current, { opacity: 1, y: 0, duration: 0.6 }, 1.3)
-      .to(
-        line1Ref.current,
-        { y: "0%", opacity: 1, duration: 0.85, ease: "power4.out" },
-        1.5,
-      )
-      .to(
-        line2Ref.current,
-        { y: "0%", opacity: 1, duration: 0.85, ease: "power4.out" },
-        1.68,
-      )
-      .to(subtitleRef.current, { opacity: 1, y: 0, duration: 0.6 }, 1.9)
-      .to(buttonsRef.current, { opacity: 1, y: 0, duration: 0.6 }, 2.1);
+  const navigate = useCallback((idx: number) => {
+    const currentIdx = currentRef.current;
+    if (animating.current || idx === currentIdx) return;
+    animating.current = true;
+
+    const direction: "right" | "left" = idx > currentIdx ? "right" : "left";
+
+    hideSlide(
+      slideElRefs.current[currentIdx],
+      getRef(currentIdx),
+      direction,
+    ).then(() => {
+      animating.current = false;
+    });
+    showSlide(slideElRefs.current[idx], getRef(idx), direction);
+
+    currentRef.current = idx;
+    setCurrent(idx);
   }, []);
 
+  const startAuto = useCallback(() => {
+    if (autoTimer.current) clearInterval(autoTimer.current);
+    autoTimer.current = setInterval(() => {
+      if (!isPaused.current) {
+        navigate((currentRef.current + 1) % SLIDES.length);
+      }
+    }, AUTO_INTERVAL);
+  }, [navigate]);
+
+  useEffect(() => {
+    startAuto();
+    return () => {
+      if (autoTimer.current) clearInterval(autoTimer.current);
+    };
+  }, [startAuto]);
+
+  const handleNavigate = (idx: number) => {
+    navigate(idx);
+    startAuto();
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStart.current = e.targetTouches[0].clientX;
+    touchEnd.current = null;
+    isPaused.current = true;
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    touchEnd.current = e.targetTouches[0].clientX;
+  };
+  const onTouchEnd = () => {
+    isPaused.current = false;
+    if (!touchStart.current || !touchEnd.current) return;
+    const delta = touchStart.current - touchEnd.current;
+    if (Math.abs(delta) < 50) return;
+    handleNavigate(
+      delta > 0
+        ? (currentRef.current + 1) % SLIDES.length
+        : (currentRef.current - 1 + SLIDES.length) % SLIDES.length,
+    );
+  };
+
   return (
-    <section className="relative w-full h-screen min-h-screen overflow-hidden bg-black">
-      {/* ── Reveal wrapper (slides in from left, clips the image) ── */}
-      <div
-        ref={revealRef}
-        className="absolute inset-0 w-full h-full overflow-hidden"
-        style={{ visibility: "hidden" }} // GSAP autoAlpha controls this
-      >
-        <img
-          ref={imgRef}
-          src="/home/hero2.jpg"
-          alt="Industrial machinery"
-          className="w-full h-full object-cover"
-          style={{ transformOrigin: "left center" }}
-        />
-      </div>
-
-      {/* ── Dark tint always present ───────────────────────────── */}
-      <div className="absolute inset-0 bg-black/65 z-1" />
-
-      {/* ── Content ────────────────────────────────────────────── */}
-      <div className="absolute z-10 inset-0 flex flex-col justify-center items-center text-center">
-        <div className="max-w-[94%] mx-auto w-full flex flex-col items-center">
-          <h1
-            className="text-5xl lg:text-8xl font-light leading-[1.04] text-white tracking-tighter mb-4"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-          >
-            <span className="block overflow-hidden">
-              <span
-                ref={line1Ref}
-                className="block text-secondary"
-                style={{ opacity: 0, transform: "translateY(100%)" }}
-              >
-                Global Engineering 
-              </span>
-            </span>
-            <span className="block overflow-hidden">
-              <span
-                ref={line2Ref}
-                className="block"
-                style={{ opacity: 0, transform: "translateY(100%)" }}
-              >
-                <em className="italic font-light text-white/75">
-                  Services Provider
-                </em>
-              </span>
-            </span>
-          </h1>
-
-          <p
-            ref={subtitleRef}
-            className="text-gray-300 max-w-xl mb-8 text-sm font-light leading-relaxed"
-            style={{ opacity: 0, transform: "translateY(12px)" }}
-          >
-            MORZ Global is a growing engineering and consultancy firm committed
-            to delivering precise, reliable technical solutions across onshore
-            and offshore projects. Our multidisciplinary team brings together
-            expertise across a wide range of engineering disciplines.
-          </p>
-
+    <section
+      className="relative w-full overflow-hidden  h-[80svh] lg:h-screen min-h-[520px]"
+      onMouseEnter={() => {
+        isPaused.current = true;
+      }}
+      onMouseLeave={() => {
+        isPaused.current = false;
+      }}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* Slides */}
+      {SLIDES.map((slide, i) => (
+        <div
+          key={slide.label}
+          ref={(el) => {
+            slideElRefs.current[i] = el;
+          }}
+          className="absolute inset-0 overflow-hidden"
+          style={{
+            opacity: i === 0 ? 1 : 0,
+            zIndex: i === 0 ? 10 : 1,
+            pointerEvents: i === current ? "initial" : "none",
+          }}
+        >
+          {/* slide-wrapper */}
           <div
-            ref={buttonsRef}
-            className="flex items-center gap-4"
-            style={{ opacity: 0, transform: "translateY(14px)" }}
+            ref={(el) => {
+              slideRefs.current[i].wrap = el;
+            }}
+            className="relative h-full w-full overflow-hidden"
           >
-            <button className="inline-flex items-center bg-primary gap-2.5 hover:bg-primary/90 text-gray-50 px-5 py-3 rounded-sm text-xs font-medium tracking-[0.06em] transition-colors duration-200">
-              Explore Solutions
-              <ArrowRight size={16} />
-            </button>
-            <button className="inline-flex items-center gap-2 backdrop-blur-sm bg-white/8 hover:bg-white/13 text-white/85 border border-white/22 hover:border-white/40 px-5 py-3 rounded-sm text-xs font-light tracking-[0.06em] transition-all duration-200">
-              Get in Touch
-            </button>
+            {/* img-wrapper */}
+            <div
+              ref={(el) => {
+                slideRefs.current[i].imgWrapper = el;
+              }}
+              className="absolute inset-0 bg-[rgba(20,30,55,0.55)]"
+            >
+              <img
+                src={slide.image}
+                alt={slide.label}
+                className="absolute  top-[-10px] h-[calc(100%+20px)] w-[calc(100%+20px)] object-cover mix-blend-luminosity"
+              />
+            </div>
+            <div className="absolute inset-0 bg-black/60 size-full pointer-events-none" />
+
+            {/* title-wrapper */}
+            {/* inner-wrapper */}
+            <div
+              ref={(el) => {
+                slideRefs.current[i].inner = el;
+              }}
+              className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-6 sm:px-16 lg:px-24"
+            >
+              <h2 className="font-['Cormorant_Garamond'] text-primary text-5xl lg:text-8xl font-light leading-[1.04] tracking-tighter mb-1">
+                {slide.title}
+                <br />
+                <em className="font-light italic text-white/60">
+                  {slide.titleEm}
+                </em>
+              </h2>
+
+              <p className="mt-3  lg:max-w-md font-['Roboto'] font-light leading-relaxed text-white/60 sm:block">
+                {slide.subtitle}
+              </p>
+            </div>
           </div>
         </div>
+      ))}
+
+      {/* Navigation tabs */}
+      <nav className="hidden absolute bottom-0 left-0 right-0 z-20 lg:flex border-t border-white/10">
+        {SLIDES.map((slide, i) => (
+          <button
+            key={slide.label}
+            onClick={() => handleNavigate(i)}
+            className={[
+              "flex flex-1 cursor-pointer flex-col items-start border-r border-white/[0.07] px-2 pb-3 pt-2 text-left transition-colors duration-200 last:border-r-0 sm:px-3 sm:pb-4 sm:pt-3 lg:px-4",
+              i === current ? "bg-white/[0.05]" : "hover:bg-white/[0.03]",
+            ].join(" ")}
+          >
+            {/* Number */}
+            <span
+              className={`mb-[3px] block font-['Roboto'] text-xs font-light tracking-[0.18em] transition-colors duration-300 ${i == current ? "text-secondary" : "text-white/40"}`}
+            >
+              {String(i + 1).padStart(2, "0")}
+            </span>
+
+            {/* Label */}
+            <span
+              className="block font-['Roboto'] text-[9px] font-light tracking-[0.04em] transition-colors duration-300 lg:text-lg"
+              style={{
+                color: i === current ? "#fff" : "rgba(255,255,255,0.35)",
+              }}
+            >
+              <span className="sm:hidden">{slide.label.split(" ")[0]}</span>
+
+              <span className="hidden sm:inline">{slide.label}</span>
+            </span>
+
+            {/* Progress */}
+            <div className="relative mt-[5px] h-[2px] w-full overflow-hidden rounded-sm bg-white/10">
+              {i === current ? (
+                <div
+                  key={`progress-${i}-${current}`}
+                  className="absolute inset-y-0 left-0 bg-secondary animate-[tabProgress_var(--duration)_linear_forwards]"
+                  style={{
+                    ["--duration" as any]: `${AUTO_INTERVAL}ms`,
+                  }}
+                />
+              ) : (
+                <div className="absolute inset-0 bg-white/20" />
+              )}
+            </div>
+          </button>
+        ))}
+      </nav>
+      <div className="absolute bottom-5 left-0 right-0 z-20 flex items-center justify-center gap-2 lg:hidden">
+        {SLIDES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => handleNavigate(i)}
+            className={[
+              "transition-all duration-300 rounded-full",
+              i === current
+                ? "w-6 h-[6px] bg-secondary"
+                : "w-[6px] h-[6px] bg-white/30",
+            ].join(" ")}
+          />
+        ))}
       </div>
+
+      {/* Keyframe */}
+      <style>{`
+    @keyframes tabProgress {
+      from { width: 0% }
+      to { width: 100% }
+    }
+  `}</style>
     </section>
   );
 }
