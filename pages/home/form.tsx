@@ -82,7 +82,7 @@ export default function ContactForm() {
 
     setStatus("loading");
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("/api/email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

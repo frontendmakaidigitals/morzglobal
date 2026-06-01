@@ -201,7 +201,8 @@ function HeroSection() {
     return () => ctx.revert();
   }, [smootherReady]);
 
-  const headline = "Bringing Innovation to Your Engineering Projects";
+  const headline =
+    "Empowering Your Engineering Projects with Cutting-Edge Innovation";
   const words = headline.split(" ");
 
   return (
