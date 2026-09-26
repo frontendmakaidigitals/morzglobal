@@ -229,7 +229,7 @@ export default function ContactForm() {
 
           <div className="cf-info opacity-0 grid grid-cols-2 gap-y-7 gap-x-5">
             {[
-              { label: "Call / Whatsapp US", lines: ["+971 508287918"] },
+              { label: "Call / Whatsapp US", lines: ["+971 503785060"] },
               {
                 label: "Our Location",
                 lines: ["Churchill Tower Business Bay, Dubai- UAE"],

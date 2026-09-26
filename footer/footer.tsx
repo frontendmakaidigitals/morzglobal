@@ -151,13 +151,13 @@ export default function Footer() {
               </div>
 
               <a
-                href="tel:+971508287918"
+                href="tel:+971503785060"
                 className="flex items-center gap-3 text-sm text-gray-200 hover:text-white transition group"
               >
                 <span className="w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/20 flex items-center justify-center shrink-0 transition">
                   <Phone size={14} />
                 </span>
-                +971 508287918
+                +971 503785060
 
               </a>
             </div>

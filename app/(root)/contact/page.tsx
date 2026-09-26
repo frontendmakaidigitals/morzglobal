@@ -191,10 +191,10 @@ export default function ContactPage() {
                   Contact
                 </p>
                 <a
-                  href="tel:+971508287918"
+                  href="tel:+971503785060"
                   className="text-white/80 hover:text-white transition-colors text-sm"
                 >
-                  +971 508287918
+                  +971 503785060
                 </a>
               </div>
             </div>
